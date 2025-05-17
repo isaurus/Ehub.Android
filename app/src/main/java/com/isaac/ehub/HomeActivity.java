@@ -1,16 +1,17 @@
 package com.isaac.ehub;
 
+import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
+import android.widget.PopupMenu;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.NavigationUI;
 
 import com.isaac.ehub.databinding.ActivityHomeBinding;
+import com.isaac.ehub.ui.auth.AuthActivity;
 
 public class HomeActivity extends AppCompatActivity {
 
@@ -34,29 +35,46 @@ public class HomeActivity extends AppCompatActivity {
             NavigationUI.setupWithNavController(binding.bottomNavigation, navController);
         }
 
-        /*
-        binding.bottomNavigation.setOnItemSelectedListener(item -> {
+        setUpToolbar();
+
+    }
+
+    private void setUpToolbar() {
+        // Configurar clic en el avatar
+        binding.userAvatar.setOnClickListener(v -> {
+            // Navegar al perfil de usuario
+            navController.navigate(R.id.userProfileFragment);
+        });
+
+        // Configurar menú de 3 puntos
+        binding.menuButton.setOnClickListener(v -> {
+            showPopupMenu();
+        });
+    }
+
+    private void showPopupMenu() {
+        PopupMenu popup = new PopupMenu(this, binding.menuButton);
+        popup.inflate(R.menu.toolbar_menu);
+
+        popup.setOnMenuItemClickListener(item -> {
             int itemId = item.getItemId();
-            if(itemId == R.id.soloQFragment){
-                navController.navigate(itemId);
+            if (itemId == R.id.action_about) {
+                navController.navigate(R.id.aboutFragment);
                 return true;
-            }
-            if(itemId == R.id.teamContainerFragment){
-                navController.navigate(itemId);
-                return true;
-            }
-            if(itemId == R.id.achievementFragment){
-                navController.navigate(itemId);
+            } else if (itemId == R.id.action_logout) {
+                performLogout();
                 return true;
             }
             return false;
         });
 
-        binding.bottomNavigation.setOnItemReselectedListener(item -> {
-            navController.popBackStack(item.getItemId(), false);
-        });
-        */
+        popup.show();
+    }
 
+    private void performLogout() {
+        // Lógica de logout
+        startActivity(new Intent(this, AuthActivity.class));
+        finish();
     }
 
     @Override
