@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "394698849339",
+    "project_id": "ehub-17207",
+    "storage_bucket": "ehub-17207.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:394698849339:android:79f1a53ce04cc7cf44f01e",
+        "android_client_info": {
+          "package_name": "com.isaac.ehub"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "394698849339-2j8375oiip5k2touqnit7feolajdgs79.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.isaac.ehub",
+            "certificate_hash": "a85aa4e7230f3d3d9f5b8151dd047716842f88c9"
+          }
+        },
+        {
+          "client_id": "394698849339-98aom2f7ebioup6kd1a99cldd0u82f2n.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.isaac.ehub",
+            "certificate_hash": "719a33fe2bd694bd2d2a7a2093746969c1cf3ed7"
+          }
+        },
+        {
+          "client_id": "394698849339-ol1j8p2ch3cj7bq5qtt6uuql4n6r6316.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAqa6Br-KTARURkG3nSA11U8b3Co9aDiyE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "394698849339-ol1j8p2ch3cj7bq5qtt6uuql4n6r6316.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

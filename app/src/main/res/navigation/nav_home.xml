@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_home"
+    app:startDestination="@id/teamContainerFragment">
+
+    <fragment
+        android:id="@+id/teamContainerFragment"
+        android:name="com.isaac.ehub.ui.team.TeamContainerFragment"
+        android:label="TeamContainerFragment"
+        tools:layout="@layout/fragment_team_container">
+        <action
+            android:id="@+id/action_teamContainerFragment_to_achievementFragment"
+            app:destination="@id/achievementFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"/>
+        <action
+            android:id="@+id/action_teamContainerFragment_to_soloQFragment"
+            app:destination="@id/soloQFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/achievementFragment"
+        android:name="com.isaac.ehub.ui.achievement.AchievementFragment"
+        android:label="AchievementFragment"
+        tools:layout="@layout/fragment_achievement">
+        <action
+            android:id="@+id/action_achievementFragment_to_teamContainerFragment"
+            app:destination="@id/teamContainerFragment"
+            app:enterAnim="@anim/slide_in_left"
+            app:exitAnim="@anim/slide_out_right"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/soloQFragment"
+        android:name="com.isaac.ehub.ui.soloq.SoloQFragment"
+        android:label="SoloQFragment"
+        tools:layout="@layout/fragment_solo_q">
+        <action
+            android:id="@+id/action_soloQFragment_to_teamContainerFragment"
+            app:destination="@id/teamContainerFragment"
+            app:enterAnim="@anim/slide_in_left"
+            app:exitAnim="@anim/slide_out_right"/>
+    </fragment>
+
+</navigation>

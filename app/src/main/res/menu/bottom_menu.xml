@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/soloQFragment"
+        android:icon="@drawable/ic_list"
+        android:title="SoloQ" />
+    <item
+        android:id="@+id/teamContainerFragment"
+        android:icon="@drawable/ic_group"
+        android:title="Teams" />
+    <item
+        android:id="@+id/achievementFragment"
+        android:icon="@drawable/ic_achievement"
+        android:title="Tasks" />
+</menu>

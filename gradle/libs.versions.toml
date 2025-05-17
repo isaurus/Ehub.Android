@@ -1,0 +1,93 @@
+[versions]
+agp = "8.9.2"
+# GsonConverter
+# converterGson = "2.11.0"
+# Credential Manager
+credentials = "1.5.0"
+# Firebase BoM
+firebaseBom = "33.13.0"
+# Fragment
+fragment = "1.8.6"
+# Glide
+glide = "4.16.0"
+# Google ID
+googleid = "1.1.1"
+# Gson
+# gson = "2.11.0"
+# Test
+junit = "4.13.2"
+junitVersion = "1.2.1"
+espressoCore = "3.6.1"
+# AppCompat
+appcompat = "1.7.0"
+# LifeCycle
+lifecycleLivedata = "2.9.0"
+lifecycleRuntimeVersion = "2.9.0"
+# Material
+material = "1.12.0"
+# Activity
+activity = "1.10.1"
+# Constraint
+constraintlayout = "2.2.1"
+
+legacySupportV4 = "1.0.0"
+
+# Dagger/Hilt
+hiltAndroid = "2.50"
+# Navigation
+navigationFragment = "2.9.0"
+navigationUi = "2.9.0"
+# RetroFit
+# retrofit = "2.11.0"
+
+[libraries]
+# Google Credentials
+androidx-credentials = { module = "androidx.credentials:credentials", version.ref = "credentials" }
+androidx-credentials-play-services-auth = { module = "androidx.credentials:credentials-play-services-auth", version.ref = "credentials" }
+# Glide
+glide = { module = "com.github.bumptech.glide:glide", version.ref = "glide" }
+# Google Id
+googleid = { module = "com.google.android.libraries.identity.googleid:googleid", version.ref = "googleid" }
+# Fragment
+androidx-fragment = { module = "androidx.fragment:fragment", version.ref = "fragment" }
+# LifeCycle
+androidx-lifecycle-lifecycle-runtime = { module = "androidx.lifecycle:lifecycle-runtime", version.ref = "lifecycleRuntimeVersion" }
+androidx-lifecycle-livedata = { group = "androidx.lifecycle", name = "lifecycle-livedata", version.ref = "lifecycleLivedata" }
+androidx-lifecycle-viewmodel-android = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-android", version.ref = "lifecycleLivedata" }
+# Activity
+activity = { group = "androidx.activity", name = "activity", version.ref = "activity" }
+# Firebase BoM + Auth
+firebase-auth = { module = "com.google.firebase:firebase-auth" }
+firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebaseBom" }
+
+# Gson
+# gson = { module = "com.google.code.gson:gson", version.ref = "gson" }
+# GsonConverter
+# converter-gson = { module = "com.squareup.retrofit2:converter-gson", version.ref = "converterGson" }
+
+# Dagger/Hilt
+hilt-android = { group = "com.google.dagger", name = "hilt-android", version.ref = "hiltAndroid" }
+hilt-compiler = { group = "com.google.dagger", name = "hilt-android-compiler", version.ref = "hiltAndroid" }
+# Test
+junit = { group = "junit", name = "junit", version.ref = "junit" }
+ext-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
+espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
+# AppCompat
+appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
+# Material
+material = { group = "com.google.android.material", name = "material", version.ref = "material" }
+# Constraint
+constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }
+androidx-legacy-support-v4 = { group = "androidx.legacy", name = "legacy-support-v4", version.ref = "legacySupportV4" }
+
+# Retrofit
+# retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit" }
+# NavigationUI
+
+navigation-ui = { module = "androidx.navigation:navigation-ui", version.ref = "navigationUi" }
+# Navigation fragment
+androidx-navigation-fragment = { module = "androidx.navigation:navigation-fragment", version.ref = "navigationFragment" }
+
+[plugins]
+android-application = { id = "com.android.application", version.ref = "agp" }
+hilt-android = { id = "com.google.dagger.hilt.android", version.ref = "hiltAndroid" }
