@@ -6,16 +6,15 @@ import java.util.Date;
 public class UserModel {
     private String firebaseUid;
     private String profilePicURL;
-    private String firstName;
-    private String lastName;
+    private String name;
+    private String email;
     private Date birthDate;
     private Country country;
 
-    public UserModel(String firebaseUid, String profilePicURL, String firstName, String lastName, Date birthDate, Country country) {
+    public UserModel(String firebaseUid, String profilePicURL, String name, Date birthDate, Country country) {
         this.firebaseUid = firebaseUid;
         this.profilePicURL = profilePicURL;
-        this.firstName = firstName;
-        this.lastName = lastName;
+        this.name = name;
         this.birthDate = birthDate;
         this.country = country;
     }
@@ -36,20 +35,20 @@ public class UserModel {
         this.profilePicURL = profilePicURL;
     }
 
-    public String getFirstName() {
-        return firstName;
+    public String getName() {
+        return name;
     }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public String getLastName() {
-        return lastName;
+    public String getEmail() {
+        return email;
     }
 
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public Date getBirthDate() {

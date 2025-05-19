@@ -5,6 +5,7 @@ import android.os.Bundle;
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.isaac.ehub.core.InsetsUtils;
 import com.isaac.ehub.databinding.ActivityAuthBinding;
 
 import dagger.hilt.android.AndroidEntryPoint;
@@ -20,5 +21,7 @@ public class AuthActivity extends AppCompatActivity {
         EdgeToEdge.enable(this);
         binding = ActivityAuthBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        InsetsUtils.applySystemWindowInsetsPadding(binding.getRoot());
     }
 }

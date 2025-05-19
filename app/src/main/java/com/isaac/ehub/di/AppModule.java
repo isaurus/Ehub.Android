@@ -1,6 +1,7 @@
 package com.isaac.ehub.di;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.isaac.ehub.data.repository.FirebaseAuthRepositoryImpl;
 import com.isaac.ehub.domain.repository.FirebaseAuthRepository;
 import com.isaac.ehub.domain.usecase.auth.CheckAuthenticatedUserUseCase;
@@ -99,5 +100,14 @@ public class AppModule {
     @Singleton
     public static SignOutUseCase provideSignoutUseCase(FirebaseAuthRepository firebaseAuthRepository){
         return new SignOutUseCase(firebaseAuthRepository);
+    }
+
+    //-----------------------------------------//
+    // DEPENDENCIAS PARA FIRESTORE (¿CREAR OTRA CLASE PARA SEPARAR RESPONSABILIDADES?)
+
+    @Provides
+    @Singleton
+    public static FirebaseFirestore provideFirebaseFirestore(){
+        return FirebaseFirestore.getInstance();
     }
 }

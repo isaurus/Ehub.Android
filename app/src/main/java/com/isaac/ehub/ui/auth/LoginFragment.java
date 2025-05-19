@@ -32,6 +32,7 @@ import android.widget.Toast;
 
 import com.google.android.libraries.identity.googleid.GetSignInWithGoogleOption;
 import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential;
+import com.isaac.ehub.core.InsetsUtils;
 import com.isaac.ehub.ui.home.HomeActivity;
 import com.isaac.ehub.R;
 import com.isaac.ehub.core.TextWatcherUtils;
@@ -71,6 +72,9 @@ public class LoginFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentLoginBinding.inflate(inflater, container, false);
+
+        InsetsUtils.applySystemWindowInsetsPadding(binding.getRoot());
+
         authViewModel = new ViewModelProvider(requireActivity()).get(AuthViewModel.class);
         return binding.getRoot();
     }

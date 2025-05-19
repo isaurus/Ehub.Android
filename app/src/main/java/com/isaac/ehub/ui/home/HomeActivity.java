@@ -6,12 +6,14 @@ import android.widget.PopupMenu;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.ViewCompat;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.NavigationUI;
 
 import com.isaac.ehub.R;
+import com.isaac.ehub.core.InsetsUtils;
 import com.isaac.ehub.databinding.ActivityHomeBinding;
 import com.isaac.ehub.ui.auth.AuthActivity;
 
@@ -35,6 +37,8 @@ public class HomeActivity extends AppCompatActivity {
 
         binding = ActivityHomeBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        InsetsUtils.applySystemWindowInsetsPadding(binding.getRoot());
 
         homeViewModel = new ViewModelProvider(this).get(HomeViewModel.class);
 
