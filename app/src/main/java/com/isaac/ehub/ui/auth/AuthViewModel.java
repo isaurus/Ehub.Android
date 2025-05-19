@@ -55,16 +55,7 @@ public class AuthViewModel extends ViewModel {
         return registerViewState;
     }
 
-    /**
-     * Ejecuta el 'loginWithEmailUseCase' y actualiza el 'LoginViewState' en función del resultado de
-     * la validación sobre el proceso.
-     *
-     * @param email El email recibido desde 'validateLoginForm'.
-     * @param password La contraseña recibida desde 'validateLoginForm'.
-     */
     public void loginWithEmail(String email, String password) {
-        loginViewState.setValue(LoginViewState.loading());
-
         loginWithEmailUseCase.execute(email, password).observeForever(resource -> {
             switch (resource.getStatus()){
                 case SUCCESS:
@@ -84,16 +75,7 @@ public class AuthViewModel extends ViewModel {
         });
     }
 
-    /**
-     * Ejecuta el 'registerWithEmailUseCase' y actualiza el 'RegistrationViewState' en función del
-     * resultado de la validación sobre el proceso.
-     *
-     * @param email El email recibido desde 'validateRegisterForm'.
-     * @param password La contraseña recibida desde 'validateRegisterForm'.
-     */
     public void registerWithEmail(String email, String password){
-        registerViewState.setValue(RegisterViewState.loading());
-
         registerWithEmailUseCase.execute(email, password).observeForever(resource -> {
             switch (resource.getStatus()){
                 case SUCCESS:
@@ -113,12 +95,6 @@ public class AuthViewModel extends ViewModel {
         });
     }
 
-    /**
-     * Ejecuta el 'loginWithGoogleUseCase' y actualiza el 'LoginViewState' en función del
-     *      * resultado de la validación sobre el proceso.
-     *
-     * @param tokenId El token de Google para la autenticación con Firebase.
-     */
     public void loginWithGoogle(String tokenId){
         loginViewState.setValue(LoginViewState.loading());
 
@@ -154,25 +130,21 @@ public class AuthViewModel extends ViewModel {
         loginViewState.setValue(LoginViewState.validating(isEmailValid, isPasswordValid));
 
         if (isEmailValid && isPasswordValid){
+            loginViewState.setValue(LoginViewState.loading());
             loginWithEmail(email, password);
         }
     }
 
-    /**
-     * Lógica para validar el input del formulario de registro.
-     *
-     * @param email El email introducido por el usuario.
-     * @param password La contraseña introducida por el usuario.
-     * @param confirmPassword La repetición de contraseña introducida por el usuario.
-     */
     public void validateRegisterForm(String email, String password, String confirmPassword){
         boolean isEmailValid = isValidEmail(email);
         boolean isPasswordValid = isValidPassword(password);
         boolean isConfirmPasswordValid = isValidConfirmPassword(password, confirmPassword);
 
+        // "Oye ya puedes mostrar en pantalla si hay errores en cada campo"
         registerViewState.setValue(RegisterViewState.validating(isEmailValid, isPasswordValid, isConfirmPasswordValid));
 
         if (isEmailValid && isPasswordValid && isConfirmPasswordValid){
+            registerViewState.setValue(RegisterViewState.loading());
             registerWithEmail(email, password);
         }
     }
