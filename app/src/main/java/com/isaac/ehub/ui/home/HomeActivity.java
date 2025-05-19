@@ -6,6 +6,7 @@ import android.widget.PopupMenu;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.NavigationUI;
@@ -14,18 +15,28 @@ import com.isaac.ehub.R;
 import com.isaac.ehub.databinding.ActivityHomeBinding;
 import com.isaac.ehub.ui.auth.AuthActivity;
 
+import dagger.hilt.android.AndroidEntryPoint;
+
+@AndroidEntryPoint
 public class HomeActivity extends AppCompatActivity {
 
-    private ActivityHomeBinding binding; // Objeto de View Binding
+    // ViewBinding para acceder a los elementos de la UI
+    private ActivityHomeBinding binding;
+
+    // NagivationController para navegar por la UI
     private NavController navController;
+
+    private HomeViewModel homeViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         EdgeToEdge.enable(this);
+
         binding = ActivityHomeBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        homeViewModel = new ViewModelProvider(this).get(HomeViewModel.class);
 
         NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.nav_host_fragment);
@@ -63,7 +74,7 @@ public class HomeActivity extends AppCompatActivity {
                 navController.navigate(R.id.aboutFragment);
                 return true;
             } else if (itemId == R.id.action_logout) {
-                performLogout();
+                signOut();
                 return true;
             }
             return false;
@@ -72,8 +83,9 @@ public class HomeActivity extends AppCompatActivity {
         popup.show();
     }
 
-    private void performLogout() {
-        // Lógica de logout
+    private void signOut() {
+        homeViewModel.signOut();
+
         startActivity(new Intent(this, AuthActivity.class));
         finish();
     }

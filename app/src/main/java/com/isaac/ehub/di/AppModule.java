@@ -7,6 +7,7 @@ import com.isaac.ehub.domain.usecase.auth.CheckAuthenticatedUserUseCase;
 import com.isaac.ehub.domain.usecase.auth.LoginWithEmailUseCase;
 import com.isaac.ehub.domain.usecase.auth.LoginWithGoogleUseCase;
 import com.isaac.ehub.domain.usecase.auth.RegisterWithEmailUseCase;
+import com.isaac.ehub.domain.usecase.home.SignOutUseCase;
 
 import javax.inject.Singleton;
 
@@ -92,5 +93,11 @@ public class AppModule {
     @Singleton
     public static CheckAuthenticatedUserUseCase provideCheckAuthenticatedUserUseCase(FirebaseAuthRepository firebaseAuthRepository){
         return new CheckAuthenticatedUserUseCase(firebaseAuthRepository);
+    }
+
+    @Provides
+    @Singleton
+    public static SignOutUseCase provideSignoutUseCase(FirebaseAuthRepository firebaseAuthRepository){
+        return new SignOutUseCase(firebaseAuthRepository);
     }
 }
