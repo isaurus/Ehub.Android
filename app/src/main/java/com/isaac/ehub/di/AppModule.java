@@ -1,9 +1,14 @@
 package com.isaac.ehub.di;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.isaac.ehub.data.repository.FirebaseAuthRepositoryImpl;
+import com.isaac.ehub.data.repository.FirestoreUserRepositoryImpl;
 import com.isaac.ehub.domain.repository.FirebaseAuthRepository;
+import com.isaac.ehub.domain.repository.FirestoreUserRepository;
 import com.isaac.ehub.domain.usecase.auth.CheckAuthenticatedUserUseCase;
+import com.isaac.ehub.domain.usecase.auth.CreateUserIfNotExistsUseCase;
+import com.isaac.ehub.domain.usecase.auth.GetAuthenticatedUserUseCase;
 import com.isaac.ehub.domain.usecase.auth.LoginWithEmailUseCase;
 import com.isaac.ehub.domain.usecase.auth.LoginWithGoogleUseCase;
 import com.isaac.ehub.domain.usecase.auth.RegisterWithEmailUseCase;
@@ -99,5 +104,32 @@ public class AppModule {
     @Singleton
     public static SignOutUseCase provideSignoutUseCase(FirebaseAuthRepository firebaseAuthRepository){
         return new SignOutUseCase(firebaseAuthRepository);
+    }
+
+    @Provides
+    @Singleton
+    public static GetAuthenticatedUserUseCase provideGetAuthenticatedUserUseCase(FirebaseAuthRepository firebaseAuthRepository){
+        return new GetAuthenticatedUserUseCase(firebaseAuthRepository);
+    }
+
+    //-----------------------------------------//
+    // DEPENDENCIAS PARA FIRESTORE (¿CREAR OTRA CLASE PARA SEPARAR RESPONSABILIDADES?)
+
+    @Provides
+    @Singleton
+    public static FirebaseFirestore provideFirebaseFirestore(){
+        return FirebaseFirestore.getInstance();
+    }
+
+    @Provides
+    @Singleton
+    public static FirestoreUserRepository provideFirestoreUserRepository(FirebaseFirestore firestore){
+        return new FirestoreUserRepositoryImpl(firestore);
+    }
+
+    @Provides
+    @Singleton
+    public static CreateUserIfNotExistsUseCase provideSaveUserIfNotExists(FirestoreUserRepository firestoreUserRepository){
+        return new CreateUserIfNotExistsUseCase(firestoreUserRepository);
     }
 }

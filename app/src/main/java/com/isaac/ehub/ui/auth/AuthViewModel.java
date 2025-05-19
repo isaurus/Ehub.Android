@@ -7,6 +7,8 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.isaac.ehub.domain.usecase.auth.CheckAuthenticatedUserUseCase;
+import com.isaac.ehub.domain.usecase.auth.CreateUserIfNotExistsUseCase;
+import com.isaac.ehub.domain.usecase.auth.GetAuthenticatedUserUseCase;
 import com.isaac.ehub.domain.usecase.auth.LoginWithEmailUseCase;
 import com.isaac.ehub.domain.usecase.auth.LoginWithGoogleUseCase;
 import com.isaac.ehub.domain.usecase.auth.RegisterWithEmailUseCase;
@@ -28,6 +30,8 @@ public class AuthViewModel extends ViewModel {
     private final LoginWithEmailUseCase loginWithEmailUseCase;
     private final LoginWithGoogleUseCase loginWithGoogleUseCase;
     private final RegisterWithEmailUseCase registerWithEmailUseCase;
+    private final CreateUserIfNotExistsUseCase createUserIfNotExistsUseCase;
+    private final GetAuthenticatedUserUseCase getAuthenticatedUserUseCase;
 
     public final MutableLiveData<LoginViewState> loginViewState = new MutableLiveData<>();
     public final MutableLiveData<RegisterViewState> registerViewState = new MutableLiveData<>();
@@ -40,18 +44,24 @@ public class AuthViewModel extends ViewModel {
      * @param loginWithEmailUseCase Use case para iniciar sesión con email y contraseña.
      * @param loginWithGoogleUseCase Use case para iniciar sesión con cuenta de Google.
      * @param registerWithEmailUseCase Use case para registrar un usuario con email y contraseña.
+     * @param createUserIfNotExistsUseCase Use case para persistir el usuario cuando se registra.
+     * @param getAuthenticatedUserUseCase Use case para obtener el usuario autenticado.
      */
     @Inject
     public AuthViewModel(
             CheckAuthenticatedUserUseCase checkAuthenticatedUserUseCase,
             LoginWithEmailUseCase loginWithEmailUseCase,
             LoginWithGoogleUseCase loginWithGoogleUseCase,
-            RegisterWithEmailUseCase registerWithEmailUseCase
+            RegisterWithEmailUseCase registerWithEmailUseCase,
+            CreateUserIfNotExistsUseCase createUserIfNotExistsUseCase,
+            GetAuthenticatedUserUseCase getAuthenticatedUserUseCase
     ) {
         this.checkAuthenticatedUserUseCase = checkAuthenticatedUserUseCase;
         this.loginWithEmailUseCase = loginWithEmailUseCase;
         this.loginWithGoogleUseCase = loginWithGoogleUseCase;
         this.registerWithEmailUseCase = registerWithEmailUseCase;
+        this.createUserIfNotExistsUseCase = createUserIfNotExistsUseCase;
+        this.getAuthenticatedUserUseCase = getAuthenticatedUserUseCase;
     }
 
     /**
@@ -87,11 +97,7 @@ public class AuthViewModel extends ViewModel {
         loginWithEmailUseCase.execute(email, password).observeForever(resource -> {
             switch (resource.getStatus()) {
                 case SUCCESS:
-                    if (resource.getData() != null) {
-                        loginViewState.setValue(LoginViewState.success());
-                    } else {
-                        loginViewState.setValue(LoginViewState.error("Error inesperado"));
-                    }
+                    loginViewState.setValue(LoginViewState.success());
                     break;
                 case ERROR:
                     loginViewState.setValue(LoginViewState.error(resource.getMessage()));
@@ -113,11 +119,8 @@ public class AuthViewModel extends ViewModel {
         registerWithEmailUseCase.execute(email, password).observeForever(resource -> {
             switch (resource.getStatus()) {
                 case SUCCESS:
-                    if (resource.getData() != null) {
-                        registerViewState.setValue(RegisterViewState.success());
-                    } else {
-                        registerViewState.setValue(RegisterViewState.error("Respuesta inesperada del servidor"));
-                    }
+                    createUserIfNotExistsUseCase.execute(getAuthenticatedUserUseCase.execute());
+                    registerViewState.setValue(RegisterViewState.success());
                     break;
                 case ERROR:
                     registerViewState.setValue(RegisterViewState.error(resource.getMessage()));
@@ -136,15 +139,11 @@ public class AuthViewModel extends ViewModel {
      */
     public void loginWithGoogle(String tokenId) {
         loginViewState.setValue(LoginViewState.loading());
-
         loginWithGoogleUseCase.execute(tokenId).observeForever(resource -> {
             switch (resource.getStatus()) {
                 case SUCCESS:
-                    if (resource.getData() != null) {
-                        loginViewState.setValue(LoginViewState.success());
-                    } else {
-                        loginViewState.setValue(LoginViewState.error("Respuesta inesperada del servidor"));
-                    }
+                    createUserIfNotExistsUseCase.execute(getAuthenticatedUserUseCase.execute());
+                    loginViewState.setValue(LoginViewState.success());
                     break;
                 case ERROR:
                     loginViewState.setValue(LoginViewState.error(resource.getMessage()));

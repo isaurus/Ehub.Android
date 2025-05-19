@@ -14,9 +14,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.isaac.ehub.core.utils.InsetsUtils;
 import com.isaac.ehub.ui.home.HomeActivity;
 import com.isaac.ehub.R;
-import com.isaac.ehub.core.TextWatcherUtils;
+import com.isaac.ehub.core.utils.TextWatcherUtils;
 import com.isaac.ehub.databinding.FragmentRegisterBinding;
 
 import dagger.hilt.android.AndroidEntryPoint;
@@ -47,6 +48,9 @@ public class RegisterFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentRegisterBinding.inflate(inflater, container, false);
+
+        InsetsUtils.applySystemWindowInsetsPadding(binding.getRoot());
+
         authViewModel = new ViewModelProvider(requireActivity()).get(AuthViewModel.class);
         return binding.getRoot();
     }

@@ -56,9 +56,10 @@ androidx-lifecycle-livedata = { group = "androidx.lifecycle", name = "lifecycle-
 androidx-lifecycle-viewmodel-android = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-android", version.ref = "lifecycleLivedata" }
 # Activity
 activity = { group = "androidx.activity", name = "activity", version.ref = "activity" }
-# Firebase BoM + Auth
-firebase-auth = { module = "com.google.firebase:firebase-auth" }
+# Firebase BoM + Auth + Store
 firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebaseBom" }
+firebase-auth = { module = "com.google.firebase:firebase-auth" }
+firebase-firestore = { module = "com.google.firebase:firebase-firestore" }
 
 # Gson
 # gson = { module = "com.google.code.gson:gson", version.ref = "gson" }

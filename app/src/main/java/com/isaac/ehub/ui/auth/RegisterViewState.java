@@ -3,7 +3,7 @@ package com.isaac.ehub.ui.auth;
 import com.isaac.ehub.core.Resource;
 
 /**
- * Clase que representa el estado actual de la vista para el {@link RegistrationFragment}.
+ * Clase que representa el estado actual de la vista para el {@link RegisterFragment}.
  * Utiliza la clase {@link Resource} para gestionar los diferentes estados
  * de una operación asíncrona (validando, cargando, éxito, error) durante el proceso
  * de registro de usuario.

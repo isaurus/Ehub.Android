@@ -68,9 +68,10 @@ dependencies {
     // Navigation Component
     implementation(libs.androidx.navigation.fragment)
     implementation(libs.navigation.ui)
-    // Firebase BoM + Auth
+    // Firebase BoM + Auth + Store
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.auth)
+    implementation(libs.firebase.firestore)
     // Firebase Credential Manager (Google)
     implementation(libs.androidx.credentials)
     implementation(libs.androidx.credentials.play.services.auth)

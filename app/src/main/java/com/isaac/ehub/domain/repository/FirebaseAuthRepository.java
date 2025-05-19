@@ -3,6 +3,7 @@ package com.isaac.ehub.domain.repository;
 import androidx.lifecycle.LiveData;
 
 import com.isaac.ehub.core.Resource;
+import com.isaac.ehub.domain.model.UserModel;
 
 public interface FirebaseAuthRepository {
 
@@ -18,6 +19,7 @@ public interface FirebaseAuthRepository {
     LiveData<Resource<Boolean>> loginWithEmail(String email, String password);
     LiveData<Resource<Boolean>> loginWithGoogle(String idToken);
 
+    UserModel getAuthenticatedUser();
     boolean isUserAuthenticated();
     void signOut();
 }

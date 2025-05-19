@@ -1,4 +1,4 @@
-package com.isaac.ehub.core;
+package com.isaac.ehub.core.utils;
 
 import android.text.Editable;
 import android.text.TextWatcher;
