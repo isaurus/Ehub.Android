@@ -1,4 +1,4 @@
-package com.isaac.ehub.ui.soloq;
+package com.isaac.ehub.ui.home.achievement;
 
 import android.os.Bundle;
 
@@ -12,10 +12,10 @@ import com.isaac.ehub.R;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link SoloQFragment#newInstance} factory method to
+ * Use the {@link AchievementFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class SoloQFragment extends Fragment {
+public class AchievementFragment extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -26,7 +26,7 @@ public class SoloQFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    public SoloQFragment() {
+    public AchievementFragment() {
         // Required empty public constructor
     }
 
@@ -36,11 +36,11 @@ public class SoloQFragment extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment SoloQFragment.
+     * @return A new instance of fragment AchievementFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static SoloQFragment newInstance(String param1, String param2) {
-        SoloQFragment fragment = new SoloQFragment();
+    public static AchievementFragment newInstance(String param1, String param2) {
+        AchievementFragment fragment = new AchievementFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -61,6 +61,6 @@ public class SoloQFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_solo_q, container, false);
+        return inflater.inflate(R.layout.fragment_achievement, container, false);
     }
 }

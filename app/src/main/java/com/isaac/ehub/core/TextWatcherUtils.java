@@ -18,7 +18,9 @@ public class TextWatcherUtils {
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 viewToEnable.setEnabled(true);
-                inputLayout.setErrorEnabled(false);
+                if (inputLayout != null) {
+                    inputLayout.setErrorEnabled(false);
+                }
             }
 
             @Override

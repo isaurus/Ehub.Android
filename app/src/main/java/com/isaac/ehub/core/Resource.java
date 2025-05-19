@@ -1,28 +1,58 @@
 package com.isaac.ehub.core;
 
 /**
- * Wrapper genérico que representa el estado de una operación asíncrona (API, BD, etc.).
- * Es usado comúnmente en ViewModels para notificar a la View sobre cambios de estado.
+ * Wrapper genérico que representa el estado de una operación asíncrona,
+ * como puede ser una llamada a API, consulta a base de datos, validación, etc.
  *
- * @param <T> Tipo de dato esperado como resultado (ej: List<Movie>, User, etc.).
+ * Esta clase es ampliamente utilizada en arquitecturas MVVM para comunicar
+ * desde el ViewModel hacia la View el estado actual de una operación,
+ * permitiendo manejar fácilmente los casos de carga, éxito, error y validación.
+ *
+ * @param <T> Tipo de dato esperado como resultado de la operación, por ejemplo,
+ *            una lista de objetos, un usuario, un booleano, etc.
  */
 public class Resource<T> {
 
     /**
-     * Estados posibles de la operación.
+     * Enumeración que define los posibles estados de la operación.
      */
     public enum Status {
-        LOADING,    // Operación en progreso
-        SUCCESS,    // Operación exitosa (data contiene el resultado)
-        ERROR,      // Operación fallida (message contiene el error)
-        VALIDATING  // Estado adicional para validaciones (ej: formularios)
+        /**
+         * Estado que indica que la operación está en progreso.
+         */
+        LOADING,
+
+        /**
+         * Estado que indica que la operación fue exitosa.
+         * En este caso el atributo {@code data} contendrá el resultado.
+         */
+        SUCCESS,
+
+        /**
+         * Estado que indica que la operación falló.
+         * En este caso el atributo {@code message} contendrá el mensaje de error.
+         */
+        ERROR,
+
+        /**
+         * Estado adicional para procesos de validación,
+         * por ejemplo, la validación de formularios antes de enviar datos.
+         */
+        VALIDATING
     }
 
-    private final Status status;    // Estado actual
-    private final T data;           // Datos retornados (en caso de éxito)
-    private final String message;   // Mensaje de error (en caso de fallo)
+    private final Status status;    // Estado actual de la operación
+    private final T data;           // Datos retornados (solo si es exitosa)
+    private final String message;   // Mensaje de error (solo si hay fallo)
 
-    // Constructor privado (solo se crea mediante métodos estáticos)
+    /**
+     * Constructor privado para asegurar la creación mediante métodos estáticos
+     * que garantizan la consistencia del estado y datos asociados.
+     *
+     * @param status Estado actual de la operación
+     * @param data Datos retornados por la operación (o null)
+     * @param message Mensaje de error (o null)
+     */
     private Resource(Status status, T data, String message) {
         this.status = status;
         this.data = data;
@@ -32,30 +62,42 @@ public class Resource<T> {
     //--- Métodos estáticos factory (patrón factory) ---//
 
     /**
-     * Operación en progreso (loading).
+     * Crea un Resource que representa una operación en progreso (loading).
+     *
+     * @param <T> Tipo del dato esperado
+     * @return instancia Resource en estado LOADING
      */
     public static <T> Resource<T> loading() {
         return new Resource<>(Status.LOADING, null, null);
     }
 
     /**
-     * Operación exitosa.
-     * @param data Datos retornados por la operación.
+     * Crea un Resource que representa una operación exitosa.
+     *
+     * @param data Datos resultantes de la operación
+     * @param <T> Tipo del dato
+     * @return instancia Resource en estado SUCCESS con los datos
      */
     public static <T> Resource<T> success(T data) {
         return new Resource<>(Status.SUCCESS, data, null);
     }
 
     /**
-     * Operación fallida.
-     * @param msg Mensaje de error.
+     * Crea un Resource que representa una operación fallida.
+     *
+     * @param msg Mensaje descriptivo del error ocurrido
+     * @param <T> Tipo del dato esperado
+     * @return instancia Resource en estado ERROR con mensaje de error
      */
     public static <T> Resource<T> error(String msg) {
         return new Resource<>(Status.ERROR, null, msg);
     }
 
     /**
-     * Operación en validación (ej: campos de un formulario).
+     * Crea un Resource que representa un estado de validación en curso.
+     *
+     * @param <T> Tipo del dato esperado
+     * @return instancia Resource en estado VALIDATING
      */
     public static <T> Resource<T> validating() {
         return new Resource<>(Status.VALIDATING, null, null);
@@ -63,28 +105,58 @@ public class Resource<T> {
 
     //--- Getters ---//
 
+    /**
+     * Obtiene el estado actual de la operación.
+     *
+     * @return estado (Status)
+     */
     public Status getStatus() {
         return status;
     }
 
+    /**
+     * Obtiene los datos resultantes de la operación, si existen.
+     *
+     * @return datos de tipo T, o null si no hay datos disponibles
+     */
     public T getData() {
         return data;
     }
 
+    /**
+     * Obtiene el mensaje de error, si la operación falló.
+     *
+     * @return mensaje de error o null si no hay error
+     */
     public String getMessage() {
         return message;
     }
 
-    //--- Métodos de conveniencia ---//
+    //--- Métodos de conveniencia para consultar el estado ---//
 
+    /**
+     * Indica si la operación está actualmente en progreso (loading).
+     *
+     * @return true si está cargando, false en caso contrario
+     */
     public boolean isLoading() {
         return status == Status.LOADING;
     }
 
+    /**
+     * Indica si la operación fue exitosa.
+     *
+     * @return true si fue exitosa, false en caso contrario
+     */
     public boolean isSuccess() {
         return status == Status.SUCCESS;
     }
 
+    /**
+     * Indica si la operación terminó en error.
+     *
+     * @return true si hubo error, false en caso contrario
+     */
     public boolean isError() {
         return status == Status.ERROR;
     }

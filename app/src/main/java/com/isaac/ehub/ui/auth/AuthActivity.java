@@ -21,7 +21,4 @@ public class AuthActivity extends AppCompatActivity {
         binding = ActivityAuthBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
     }
-
-    // Listeners (para el tema del teclado, etc.)
-    // Observers
 }
