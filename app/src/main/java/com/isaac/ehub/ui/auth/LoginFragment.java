@@ -34,6 +34,7 @@ import com.google.android.libraries.identity.googleid.GetSignInWithGoogleOption;
 import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential;
 import com.isaac.ehub.HomeActivity;
 import com.isaac.ehub.R;
+import com.isaac.ehub.core.TextWatcherUtils;
 import com.isaac.ehub.databinding.FragmentLoginBinding;
 
 
@@ -50,7 +51,7 @@ public class LoginFragment extends Fragment {
     private AuthViewModel authViewModel;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentLoginBinding.inflate(inflater, container, false);
         authViewModel = new ViewModelProvider(requireActivity()).get(AuthViewModel.class);
         return binding.getRoot();
@@ -64,10 +65,6 @@ public class LoginFragment extends Fragment {
         observeViewModel();
     }
 
-    /**
-     * Configura los listeners del fragmento para los botones de login con correo y contraseña,
-     * login con Google y navegación al fragmento de registro.
-     */
     private void setUpListeners(){
         binding.btnLogin.setOnClickListener(v ->{
             String email = binding.etEmail.getText().toString().trim();
@@ -83,30 +80,34 @@ public class LoginFragment extends Fragment {
         binding.tvRegister.setOnClickListener(v -> {
             NavHostFragment.findNavController(this).navigate(R.id.action_loginFragment_to_registrationFragment);
         });
+
+        TextWatcherUtils.enableViewOnTextChange(binding.etEmail, binding.btnLogin, null);
+        TextWatcherUtils.enableViewOnTextChange(binding.etPassword, binding.btnLogin, binding.tilPassword);
     }
 
-    /**
-     * Observa los cambios en el fragmento y actualiza la UI según los inputs.
-     */
     private void observeViewModel(){
-        authViewModel.getLoginViewState().observe(getViewLifecycleOwner(), viewState -> {
-            binding.progressBar.setVisibility(viewState.isLoading() ? View.VISIBLE : View.GONE);
+        authViewModel.getLoginViewState().observe(getViewLifecycleOwner(), loginViewState -> {
+            switch(loginViewState.getStatus()){
+                case VALIDATING:
+                    binding.progressBar.setVisibility(View.GONE);
+                    binding.btnLogin.setEnabled(false);
 
-            if (!viewState.isEmailValid()){
-                binding.tilEmail.setError("Email no válido");
-            } else{
-                binding.tilEmail.setError(null);
-            }
-
-            if (!viewState.isPasswordValid()){
-                binding.tilPassword.setError("Contraseña inválida");
-            } else{
-                binding.tilPassword.setError(null);
-            }
-
-            if (viewState.isSuccess()){
-                requireActivity().startActivity(new Intent(requireContext(), HomeActivity.class));
-                requireActivity().finish();
+                    binding.tilEmail.setError(loginViewState.isEmailValid() ? null : "Email no registrado");
+                    binding.tilPassword.setError(loginViewState.isPasswordValid() ? null : "Contraseña no válida");
+                    break;
+                case LOADING:
+                    binding.progressBar.setVisibility(View.VISIBLE);
+                    binding.btnLogin.setEnabled(false);
+                    break;
+                case SUCCESS:
+                    binding.progressBar.setVisibility(View.GONE);
+                    requireActivity().startActivity(new Intent(requireContext(), HomeActivity.class));
+                    requireActivity().finish();
+                    break;
+                case ERROR:
+                    binding.progressBar.setVisibility(View.GONE);
+                    Toast.makeText(getContext(), loginViewState.getMessage(), Toast.LENGTH_LONG).show();
+                    break;
             }
         });
     }

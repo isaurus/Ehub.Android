@@ -14,9 +14,11 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.isaac.ehub.HomeActivity;
 import com.isaac.ehub.R;
+import com.isaac.ehub.core.TextWatcherUtils;
 import com.isaac.ehub.databinding.FragmentRegisterBinding;
 
 public class RegisterFragment extends Fragment {
@@ -25,7 +27,7 @@ public class RegisterFragment extends Fragment {
     private AuthViewModel authViewModel;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentRegisterBinding.inflate(inflater, container, false);
         authViewModel = new ViewModelProvider(requireActivity()).get(AuthViewModel.class);
         return binding.getRoot();
@@ -39,6 +41,7 @@ public class RegisterFragment extends Fragment {
         observeViewModel();
     }
 
+    // Los listeners gestionan la interacción del usuario con la UI y llaman al ViewModel para delegar la lógica
     private void setUpListeners(){
         binding.btnRegister.setOnClickListener(v -> {
             String email = binding.etEmail.getText().toString().trim();
@@ -52,84 +55,36 @@ public class RegisterFragment extends Fragment {
             NavHostFragment.findNavController(this).navigate(R.id.action_registrationFragment_to_loginFragment);
         });
 
-        // ESTUDIAR TO' EL TEMA DE TEXTWATCHER
-        binding.etEmail.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int start, int count, int after) {}
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int start, int before, int count) {
-                // Validar email en tiempo real
-                String email = charSequence.toString().trim();
-                authViewModel.validateRegisterForm(email, binding.etPassword.getText().toString().trim(), binding.etConfirmPassword.getText().toString().trim());
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {}
-        });
-
-        binding.etPassword.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int start, int count, int after) {}
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int start, int before, int count) {
-                // Validar password en tiempo real
-                String password = charSequence.toString().trim();
-                authViewModel.validateRegisterForm(binding.etEmail.getText().toString().trim(), password, binding.etConfirmPassword.getText().toString().trim());
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {}
-        });
-
-        binding.etConfirmPassword.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int start, int count, int after) {}
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int start, int before, int count) {
-                // Validar confirmPassword en tiempo real
-                String confirmPassword = charSequence.toString().trim();
-                authViewModel.validateRegisterForm(binding.etEmail.getText().toString().trim(), binding.etPassword.getText().toString().trim(), confirmPassword);
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {}
-        });
+        TextWatcherUtils.enableViewOnTextChange(binding.etEmail, binding.btnRegister, null);
+        TextWatcherUtils.enableViewOnTextChange(binding.etPassword, binding.btnRegister, binding.tilPassword);
+        TextWatcherUtils.enableViewOnTextChange(binding.etConfirmPassword, binding.btnRegister, binding.tilConfirmPassword);
     }
 
     private void observeViewModel(){
-        authViewModel.getRegisterViewState().observe(getViewLifecycleOwner(), viewState -> {
-            binding.progressBar.setVisibility(viewState.isLoading() ? View.VISIBLE : View.GONE);
+        // Observa los cambios del estado actual (RegisterViewState) y, cada vez que cambie ese estado, se ejecuta el lambda
+        authViewModel.getRegisterViewState().observe(getViewLifecycleOwner(), registerViewState -> {
+            switch (registerViewState.getStatus()){
+                case VALIDATING:
+                    binding.progressBar.setVisibility(View.GONE);
+                    binding.btnRegister.setEnabled(false);
 
-            if (!viewState.isEmailValid()){
-                binding.tilEmail.setError("Email no válido");
-            } else{
-                binding.tilEmail.setError(null);
-            }
-
-            if (!viewState.isPasswordValid()){
-                binding.tilPassword.setError("Contraseña inválida");
-            } else{
-                binding.tilPassword.setError(null);
-            }
-
-            if(!viewState.isConfirmPasswordValid()){
-                binding.tilConfirmPassword.setError("Las contraseñas no coinciden");
-            } else{
-                binding.tilConfirmPassword.setError(null);
-            }
-
-            // ¡MEJORAR!
-            boolean allValid = viewState.isEmailValid() &&
-                    viewState.isPasswordValid() &&
-                    viewState.isConfirmPasswordValid();
-            binding.btnRegister.setEnabled(allValid);
-
-            if (viewState.isSuccess()){
-                requireActivity().startActivity(new Intent(requireContext(), HomeActivity.class));
-                requireActivity().finish();
+                    binding.tilEmail.setError(registerViewState.isEmailValid() ? null : "Email no válido");
+                    binding.tilPassword.setError(registerViewState.isPasswordValid() ? null : "Contraseña no válida");
+                    binding.tilConfirmPassword.setError(registerViewState.isConfirmPasswordValid() ? null : "Las contraseñas no coinciden");
+                    break;
+                case LOADING:
+                    binding.progressBar.setVisibility(View.VISIBLE);
+                    binding.btnRegister.setEnabled(false);
+                    break;
+                case SUCCESS:
+                    binding.progressBar.setVisibility(View.GONE);
+                    requireActivity().startActivity(new Intent(requireContext(), HomeActivity.class));
+                    requireActivity().finish();
+                    break;
+                case ERROR:
+                    binding.progressBar.setVisibility(View.GONE);
+                    Toast.makeText(getContext(), registerViewState.getMessage(), Toast.LENGTH_LONG).show();
+                    break;
             }
         });
     }

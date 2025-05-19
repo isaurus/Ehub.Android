@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="16dp"
-    tools:context=".ui.auth.RegistrationFragment">
+    tools:context=".ui.auth.RegisterFragment">
 
     <TextView
         android:id="@+id/tv_register_title"
@@ -18,8 +18,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="32dp" />
-
-
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/til_email"
@@ -82,7 +80,6 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
-        android:enabled="false"
         android:text="Registrarme"
         app:cornerRadius="8dp"
         app:layout_constraintEnd_toEndOf="parent"

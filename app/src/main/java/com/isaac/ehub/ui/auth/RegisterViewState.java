@@ -22,8 +22,8 @@ public class RegisterViewState {
     }
 
     public static RegisterViewState validating(boolean isEmailValid,
-                                                   boolean isPasswordValid,
-                                                   boolean isConfirmPasswordValid) {
+                                               boolean isPasswordValid,
+                                               boolean isConfirmPasswordValid) {
         return new RegisterViewState(
                 Resource.validating(),
                 isEmailValid,
