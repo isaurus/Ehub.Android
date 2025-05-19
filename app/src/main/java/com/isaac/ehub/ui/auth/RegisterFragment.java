@@ -14,10 +14,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import com.isaac.ehub.core.InsetsUtils;
+import com.isaac.ehub.core.utils.InsetsUtils;
 import com.isaac.ehub.ui.home.HomeActivity;
 import com.isaac.ehub.R;
-import com.isaac.ehub.core.TextWatcherUtils;
+import com.isaac.ehub.core.utils.TextWatcherUtils;
 import com.isaac.ehub.databinding.FragmentRegisterBinding;
 
 import dagger.hilt.android.AndroidEntryPoint;

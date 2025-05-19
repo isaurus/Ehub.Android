@@ -5,7 +5,7 @@ import android.os.Bundle;
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.isaac.ehub.core.InsetsUtils;
+import com.isaac.ehub.core.utils.InsetsUtils;
 import com.isaac.ehub.databinding.ActivityAuthBinding;
 
 import dagger.hilt.android.AndroidEntryPoint;

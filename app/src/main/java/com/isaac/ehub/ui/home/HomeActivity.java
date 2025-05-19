@@ -6,14 +6,13 @@ import android.widget.PopupMenu;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.view.ViewCompat;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.NavigationUI;
 
 import com.isaac.ehub.R;
-import com.isaac.ehub.core.InsetsUtils;
+import com.isaac.ehub.core.utils.InsetsUtils;
 import com.isaac.ehub.databinding.ActivityHomeBinding;
 import com.isaac.ehub.ui.auth.AuthActivity;
 

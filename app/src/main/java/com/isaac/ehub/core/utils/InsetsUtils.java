@@ -1,4 +1,4 @@
-package com.isaac.ehub.core;
+package com.isaac.ehub.core.utils;
 
 import android.view.View;
 import androidx.core.view.ViewCompat;

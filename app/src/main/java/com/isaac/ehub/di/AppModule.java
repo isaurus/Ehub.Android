@@ -7,10 +7,11 @@ import com.isaac.ehub.data.repository.FirestoreUserRepositoryImpl;
 import com.isaac.ehub.domain.repository.FirebaseAuthRepository;
 import com.isaac.ehub.domain.repository.FirestoreUserRepository;
 import com.isaac.ehub.domain.usecase.auth.CheckAuthenticatedUserUseCase;
+import com.isaac.ehub.domain.usecase.auth.CreateUserIfNotExistsUseCase;
+import com.isaac.ehub.domain.usecase.auth.GetAuthenticatedUserUseCase;
 import com.isaac.ehub.domain.usecase.auth.LoginWithEmailUseCase;
 import com.isaac.ehub.domain.usecase.auth.LoginWithGoogleUseCase;
 import com.isaac.ehub.domain.usecase.auth.RegisterWithEmailUseCase;
-import com.isaac.ehub.domain.usecase.auth.SaveUserIfNotExistsUseCase;
 import com.isaac.ehub.domain.usecase.home.SignOutUseCase;
 
 import javax.inject.Singleton;
@@ -105,6 +106,12 @@ public class AppModule {
         return new SignOutUseCase(firebaseAuthRepository);
     }
 
+    @Provides
+    @Singleton
+    public static GetAuthenticatedUserUseCase provideGetAuthenticatedUserUseCase(FirebaseAuthRepository firebaseAuthRepository){
+        return new GetAuthenticatedUserUseCase(firebaseAuthRepository);
+    }
+
     //-----------------------------------------//
     // DEPENDENCIAS PARA FIRESTORE (¿CREAR OTRA CLASE PARA SEPARAR RESPONSABILIDADES?)
 
@@ -122,7 +129,7 @@ public class AppModule {
 
     @Provides
     @Singleton
-    public static SaveUserIfNotExistsUseCase provideSaveUserIfNotExists(FirestoreUserRepository firestoreUserRepository){
-        return new SaveUserIfNotExistsUseCase(firestoreUserRepository);
+    public static CreateUserIfNotExistsUseCase provideSaveUserIfNotExists(FirestoreUserRepository firestoreUserRepository){
+        return new CreateUserIfNotExistsUseCase(firestoreUserRepository);
     }
 }

@@ -32,10 +32,10 @@ import android.widget.Toast;
 
 import com.google.android.libraries.identity.googleid.GetSignInWithGoogleOption;
 import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential;
-import com.isaac.ehub.core.InsetsUtils;
+import com.isaac.ehub.core.utils.InsetsUtils;
 import com.isaac.ehub.ui.home.HomeActivity;
 import com.isaac.ehub.R;
-import com.isaac.ehub.core.TextWatcherUtils;
+import com.isaac.ehub.core.utils.TextWatcherUtils;
 import com.isaac.ehub.databinding.FragmentLoginBinding;
 
 

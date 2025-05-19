@@ -8,12 +8,12 @@ import com.isaac.ehub.domain.repository.FirestoreUserRepository;
 
 import javax.inject.Inject;
 
-public class SaveUserIfNotExistsUseCase {
+public class CreateUserIfNotExistsUseCase {
 
     private final FirestoreUserRepository firestoreUserRepository;
 
     @Inject
-    public SaveUserIfNotExistsUseCase(FirestoreUserRepository firestoreUserRepository) {
+    public CreateUserIfNotExistsUseCase(FirestoreUserRepository firestoreUserRepository) {
         this.firestoreUserRepository = firestoreUserRepository;
     }
 

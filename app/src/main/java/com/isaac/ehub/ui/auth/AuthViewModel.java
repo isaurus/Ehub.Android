@@ -7,10 +7,11 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.isaac.ehub.domain.usecase.auth.CheckAuthenticatedUserUseCase;
+import com.isaac.ehub.domain.usecase.auth.CreateUserIfNotExistsUseCase;
+import com.isaac.ehub.domain.usecase.auth.GetAuthenticatedUserUseCase;
 import com.isaac.ehub.domain.usecase.auth.LoginWithEmailUseCase;
 import com.isaac.ehub.domain.usecase.auth.LoginWithGoogleUseCase;
 import com.isaac.ehub.domain.usecase.auth.RegisterWithEmailUseCase;
-import com.isaac.ehub.domain.usecase.auth.SaveUserIfNotExistsUseCase;
 
 import javax.inject.Inject;
 import dagger.hilt.android.lifecycle.HiltViewModel;
@@ -29,7 +30,8 @@ public class AuthViewModel extends ViewModel {
     private final LoginWithEmailUseCase loginWithEmailUseCase;
     private final LoginWithGoogleUseCase loginWithGoogleUseCase;
     private final RegisterWithEmailUseCase registerWithEmailUseCase;
-    private final SaveUserIfNotExistsUseCase saveUserIfNotExistsUseCase;
+    private final CreateUserIfNotExistsUseCase createUserIfNotExistsUseCase;
+    private final GetAuthenticatedUserUseCase getAuthenticatedUserUseCase;
 
     public final MutableLiveData<LoginViewState> loginViewState = new MutableLiveData<>();
     public final MutableLiveData<RegisterViewState> registerViewState = new MutableLiveData<>();
@@ -42,7 +44,8 @@ public class AuthViewModel extends ViewModel {
      * @param loginWithEmailUseCase Use case para iniciar sesión con email y contraseña.
      * @param loginWithGoogleUseCase Use case para iniciar sesión con cuenta de Google.
      * @param registerWithEmailUseCase Use case para registrar un usuario con email y contraseña.
-     * @param saveUserIfNotExistsUseCase Use case para persistir el usuario cuando se registra.
+     * @param createUserIfNotExistsUseCase Use case para persistir el usuario cuando se registra.
+     * @param getAuthenticatedUserUseCase Use case para obtener el usuario autenticado.
      */
     @Inject
     public AuthViewModel(
@@ -50,13 +53,15 @@ public class AuthViewModel extends ViewModel {
             LoginWithEmailUseCase loginWithEmailUseCase,
             LoginWithGoogleUseCase loginWithGoogleUseCase,
             RegisterWithEmailUseCase registerWithEmailUseCase,
-            SaveUserIfNotExistsUseCase saveUserIfNotExistsUseCase
+            CreateUserIfNotExistsUseCase createUserIfNotExistsUseCase,
+            GetAuthenticatedUserUseCase getAuthenticatedUserUseCase
     ) {
         this.checkAuthenticatedUserUseCase = checkAuthenticatedUserUseCase;
         this.loginWithEmailUseCase = loginWithEmailUseCase;
         this.loginWithGoogleUseCase = loginWithGoogleUseCase;
         this.registerWithEmailUseCase = registerWithEmailUseCase;
-        this.saveUserIfNotExistsUseCase = saveUserIfNotExistsUseCase;
+        this.createUserIfNotExistsUseCase = createUserIfNotExistsUseCase;
+        this.getAuthenticatedUserUseCase = getAuthenticatedUserUseCase;
     }
 
     /**
@@ -114,6 +119,7 @@ public class AuthViewModel extends ViewModel {
         registerWithEmailUseCase.execute(email, password).observeForever(resource -> {
             switch (resource.getStatus()) {
                 case SUCCESS:
+                    createUserIfNotExistsUseCase.execute(getAuthenticatedUserUseCase.execute());
                     registerViewState.setValue(RegisterViewState.success());
                     break;
                 case ERROR:
@@ -133,10 +139,10 @@ public class AuthViewModel extends ViewModel {
      */
     public void loginWithGoogle(String tokenId) {
         loginViewState.setValue(LoginViewState.loading());
-
         loginWithGoogleUseCase.execute(tokenId).observeForever(resource -> {
             switch (resource.getStatus()) {
                 case SUCCESS:
+                    createUserIfNotExistsUseCase.execute(getAuthenticatedUserUseCase.execute());
                     loginViewState.setValue(LoginViewState.success());
                     break;
                 case ERROR:
