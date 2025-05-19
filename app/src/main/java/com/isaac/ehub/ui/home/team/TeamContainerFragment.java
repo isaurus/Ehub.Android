@@ -1,4 +1,4 @@
-package com.isaac.ehub.ui.team;
+package com.isaac.ehub.ui.home.team;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -12,9 +12,9 @@ import androidx.viewpager2.adapter.FragmentStateAdapter;
 
 import com.google.android.material.tabs.TabLayoutMediator;
 import com.isaac.ehub.databinding.FragmentTeamContainerBinding;
-import com.isaac.ehub.ui.team.calendar.CalendarFragment;
-import com.isaac.ehub.ui.team.member.MemberFragment;
-import com.isaac.ehub.ui.team.task.TaskFragment;
+import com.isaac.ehub.ui.home.team.calendar.CalendarFragment;
+import com.isaac.ehub.ui.home.team.member.MemberFragment;
+import com.isaac.ehub.ui.home.team.task.TaskFragment;
 
 public class TeamContainerFragment extends Fragment {
 

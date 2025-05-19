@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/teamContainerFragment"
-        android:name="com.isaac.ehub.ui.team.TeamContainerFragment"
+        android:name="com.isaac.ehub.ui.home.team.TeamContainerFragment"
         android:label="TeamContainerFragment"
         tools:layout="@layout/fragment_team_container">
         <action
@@ -34,7 +34,7 @@
 
     <fragment
         android:id="@+id/achievementFragment"
-        android:name="com.isaac.ehub.ui.achievement.AchievementFragment"
+        android:name="com.isaac.ehub.ui.home.achievement.AchievementFragment"
         android:label="AchievementFragment"
         tools:layout="@layout/fragment_achievement">
         <action
@@ -46,7 +46,7 @@
 
     <fragment
         android:id="@+id/soloQFragment"
-        android:name="com.isaac.ehub.ui.soloq.SoloQFragment"
+        android:name="com.isaac.ehub.ui.home.soloq.SoloQFragment"
         android:label="SoloQFragment"
         tools:layout="@layout/fragment_solo_q">
         <action
@@ -58,7 +58,7 @@
 
     <fragment
         android:id="@+id/userProfileFragment"
-        android:name="com.isaac.ehub.ui.userprofile.UserProfileFragment"
+        android:name="com.isaac.ehub.ui.home.userprofile.UserProfileFragment"
         android:label="UserProfileFragment"
         tools:layout="@layout/fragment_user_profile">
         <action
@@ -77,7 +77,7 @@
 
     <fragment
         android:id="@+id/aboutFragment"
-        android:name="com.isaac.ehub.ui.about.AboutFragment"
+        android:name="com.isaac.ehub.ui.home.about.AboutFragment"
         android:label="AboutFragment"
         tools:layout="@layout/fragment_about">
         <action

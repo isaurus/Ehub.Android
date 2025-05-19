@@ -3,6 +3,7 @@ package com.isaac.ehub.di;
 import com.google.firebase.auth.FirebaseAuth;
 import com.isaac.ehub.data.repository.FirebaseAuthRepositoryImpl;
 import com.isaac.ehub.domain.repository.FirebaseAuthRepository;
+import com.isaac.ehub.domain.usecase.auth.CheckAuthenticatedUserUseCase;
 import com.isaac.ehub.domain.usecase.auth.LoginWithEmailUseCase;
 import com.isaac.ehub.domain.usecase.auth.LoginWithGoogleUseCase;
 import com.isaac.ehub.domain.usecase.auth.RegisterWithEmailUseCase;
@@ -79,5 +80,17 @@ public class AppModule {
     @Singleton
     public static RegisterWithEmailUseCase provideRegisterWithEmailUseCase(FirebaseAuthRepository firebaseAuthRepository) {
         return new RegisterWithEmailUseCase(firebaseAuthRepository);
+    }
+
+    /**
+     * Proporciona el caso de uso para comprobar si un usuario ya está logeado para saltarse la fase de login.
+     *
+     * @param firebaseAuthRepository Repositorio de autenticación
+     * @return Instancia de CheckAuthenticatedUseCase
+     */
+    @Provides
+    @Singleton
+    public static CheckAuthenticatedUserUseCase provideCheckAuthenticatedUserUseCase(FirebaseAuthRepository firebaseAuthRepository){
+        return new CheckAuthenticatedUserUseCase(firebaseAuthRepository);
     }
 }

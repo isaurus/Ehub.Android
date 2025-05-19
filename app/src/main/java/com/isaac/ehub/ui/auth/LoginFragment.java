@@ -32,24 +32,42 @@ import android.widget.Toast;
 
 import com.google.android.libraries.identity.googleid.GetSignInWithGoogleOption;
 import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential;
-import com.isaac.ehub.HomeActivity;
+import com.isaac.ehub.ui.home.HomeActivity;
 import com.isaac.ehub.R;
 import com.isaac.ehub.core.TextWatcherUtils;
 import com.isaac.ehub.databinding.FragmentLoginBinding;
 
 
 import dagger.hilt.android.AndroidEntryPoint;
-
 /**
- * Fragmento de login. Utiliza ViewBinding para gestionar las vistas de la UI y utiliza el
- * 'AuthViewModel' para delegar la lógica.
+ * {@code LoginFragment} es un fragmento de la interfaz de usuario responsable de manejar
+ * el inicio de sesión en la aplicación, ya sea mediante correo electrónico y contraseña
+ * o a través del acceso con Google.
+ *
+ * <p>Este fragmento utiliza ViewBinding para interactuar con las vistas del layout
+ * {@code fragment_login.xml} y se apoya en un {@link AuthViewModel} para gestionar
+ * la lógica de validación y autenticación.</p>
+ *
+ * <p>Además, implementa la integración con el Credential Manager para permitir
+ * el inicio de sesión con cuentas de Google previamente asociadas al dispositivo.</p>
+ *
+ * <p>Anotado con {@code @AndroidEntryPoint} para habilitar la inyección de dependencias con Hilt.</p>
+ *
+ * @author Isaac
+ * @version 1.0
  */
 @AndroidEntryPoint
 public class LoginFragment extends Fragment {
 
+    // ViewBinding para acceder a los elementos de la UI.
     private FragmentLoginBinding binding;
+
+    // ViewModel que gestiona la lógica de autenticación.
     private AuthViewModel authViewModel;
 
+    /**
+     * Inflamos el layout del fragmento usando ViewBinding.
+     */
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentLoginBinding.inflate(inflater, container, false);
@@ -57,6 +75,10 @@ public class LoginFragment extends Fragment {
         return binding.getRoot();
     }
 
+    /**
+     * Se llama una vez que la vista ha sido creada. Aquí se configuran los
+     * listeners y la observación del ViewModel.
+     */
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -65,6 +87,13 @@ public class LoginFragment extends Fragment {
         observeViewModel();
     }
 
+    /**
+     * Configura los listeners de los botones y los campos de texto.
+     * - {@code btnLogin}: valida y procesa el inicio de sesión por correo.
+     * - {@code btnGoogleSignIn}: lanza el flujo de autenticación con Google.
+     * - {@code tvRegister}: navega al fragmento de registro.
+     * También se habilita la lógica para activar el botón cuando se introduzca texto.
+     */
     private void setUpListeners(){
         binding.btnLogin.setOnClickListener(v ->{
             String email = binding.etEmail.getText().toString().trim();
@@ -81,10 +110,15 @@ public class LoginFragment extends Fragment {
             NavHostFragment.findNavController(this).navigate(R.id.action_loginFragment_to_registrationFragment);
         });
 
+        // Habilita el botón de login al introducir texto.
         TextWatcherUtils.enableViewOnTextChange(binding.etEmail, binding.btnLogin, null);
         TextWatcherUtils.enableViewOnTextChange(binding.etPassword, binding.btnLogin, binding.tilPassword);
     }
 
+    /**
+     * Observa el estado de la vista del login a través del ViewModel,
+     * y actualiza la interfaz de usuario en función del estado.
+     */
     private void observeViewModel(){
         authViewModel.getLoginViewState().observe(getViewLifecycleOwner(), loginViewState -> {
             switch(loginViewState.getStatus()){
@@ -113,8 +147,9 @@ public class LoginFragment extends Fragment {
     }
 
     /**
-     * Lanza el 'Credential Manager' en el fragment cuando se pulsa sobre el botón de Google para
-     * iniciar sesión con las cuentas asociadas al dispositivo.
+     * Inicia el flujo de autenticación con Google mediante el Credential Manager.
+     * Este método crea una solicitud de credenciales específicas para Google y
+     * lanza el flujo de selección de cuenta.
      */
     private void launchGoogleSignInFlow() {
         GetSignInWithGoogleOption getSignInWithGoogleOption = new GetSignInWithGoogleOption
@@ -147,21 +182,18 @@ public class LoginFragment extends Fragment {
     }
 
     /**
-     * Gestiona la respuesta de éxito en el login.
+     * Procesa la respuesta exitosa del flujo de inicio con Google.
      *
-     * @param response El resultado de la solicitud de la credencial.
+     * @param response La respuesta del CredentialManager con la credencial obtenida.
      */
     private void handleSignIn(GetCredentialResponse response) {
         Credential credential = response.getCredential();
-        // Check if credential is of type Google ID
         if (credential instanceof CustomCredential) {
             CustomCredential customCredential = (CustomCredential) credential;
             if (TYPE_GOOGLE_ID_TOKEN_CREDENTIAL.equals(credential.getType())) {
-                // Create Google ID Token
                 Bundle credentialData = customCredential.getData();
                 GoogleIdTokenCredential googleIdTokenCredential = GoogleIdTokenCredential.createFrom(credentialData);
 
-                // Sign in to Firebase using the token
                 authViewModel.loginWithGoogle(googleIdTokenCredential.getIdToken());
             } else {
                 Log.w(TAG, "Credential is not of type Google ID!");
@@ -172,29 +204,28 @@ public class LoginFragment extends Fragment {
     }
 
     /**
-     * Gestiona la respuesta de error en el login desde el 'Credential Manager'
+     * Maneja los errores que puedan ocurrir durante el flujo de autenticación con Google.
      *
-     * @param e El error lanzado por el 'Credential Manager'.
+     * @param e La excepción lanzada por el CredentialManager.
      */
     private void handleFailure(GetCredentialException e) {
         Log.e(TAG, "Sign in failed", e);
 
-        // Mostrar mensaje de error al usuario
         if (getContext() != null) {
             Toast.makeText(getContext(), "Error during Google sign in: " + e.getMessage(),
                     Toast.LENGTH_SHORT).show();
         }
 
-        // Opcional: Manejar tipos específicos de errores
         if (e instanceof NoCredentialException) {
-            // El usuario canceló el flujo de autenticación
             Log.d(TAG, "User canceled the sign in flow");
         } else if (e instanceof GetCredentialInterruptedException) {
-            // El flujo fue interrumpido
             Log.w(TAG, "Sign in flow was interrupted");
         }
     }
 
+    /**
+     * Libera el binding al destruirse la vista para evitar memory leaks.
+     */
     @Override
     public void onDestroyView(){
         super.onDestroyView();

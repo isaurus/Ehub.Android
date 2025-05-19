@@ -17,4 +17,6 @@ public interface FirebaseAuthRepository {
     LiveData<Resource<Boolean>> registerWithEmail(String email, String password);
     LiveData<Resource<Boolean>> loginWithEmail(String email, String password);
     LiveData<Resource<Boolean>> loginWithGoogle(String idToken);
+
+    boolean isUserAuthenticated();
 }

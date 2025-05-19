@@ -1,4 +1,4 @@
-package com.isaac.ehub;
+package com.isaac.ehub.ui.home;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,6 +10,7 @@ import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.NavigationUI;
 
+import com.isaac.ehub.R;
 import com.isaac.ehub.databinding.ActivityHomeBinding;
 import com.isaac.ehub.ui.auth.AuthActivity;
 
