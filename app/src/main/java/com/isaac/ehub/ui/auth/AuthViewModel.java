@@ -10,6 +10,7 @@ import com.isaac.ehub.domain.usecase.auth.CheckAuthenticatedUserUseCase;
 import com.isaac.ehub.domain.usecase.auth.LoginWithEmailUseCase;
 import com.isaac.ehub.domain.usecase.auth.LoginWithGoogleUseCase;
 import com.isaac.ehub.domain.usecase.auth.RegisterWithEmailUseCase;
+import com.isaac.ehub.domain.usecase.auth.SaveUserIfNotExistsUseCase;
 
 import javax.inject.Inject;
 import dagger.hilt.android.lifecycle.HiltViewModel;
@@ -28,6 +29,7 @@ public class AuthViewModel extends ViewModel {
     private final LoginWithEmailUseCase loginWithEmailUseCase;
     private final LoginWithGoogleUseCase loginWithGoogleUseCase;
     private final RegisterWithEmailUseCase registerWithEmailUseCase;
+    private final SaveUserIfNotExistsUseCase saveUserIfNotExistsUseCase;
 
     public final MutableLiveData<LoginViewState> loginViewState = new MutableLiveData<>();
     public final MutableLiveData<RegisterViewState> registerViewState = new MutableLiveData<>();
@@ -40,18 +42,21 @@ public class AuthViewModel extends ViewModel {
      * @param loginWithEmailUseCase Use case para iniciar sesión con email y contraseña.
      * @param loginWithGoogleUseCase Use case para iniciar sesión con cuenta de Google.
      * @param registerWithEmailUseCase Use case para registrar un usuario con email y contraseña.
+     * @param saveUserIfNotExistsUseCase Use case para persistir el usuario cuando se registra.
      */
     @Inject
     public AuthViewModel(
             CheckAuthenticatedUserUseCase checkAuthenticatedUserUseCase,
             LoginWithEmailUseCase loginWithEmailUseCase,
             LoginWithGoogleUseCase loginWithGoogleUseCase,
-            RegisterWithEmailUseCase registerWithEmailUseCase
+            RegisterWithEmailUseCase registerWithEmailUseCase,
+            SaveUserIfNotExistsUseCase saveUserIfNotExistsUseCase
     ) {
         this.checkAuthenticatedUserUseCase = checkAuthenticatedUserUseCase;
         this.loginWithEmailUseCase = loginWithEmailUseCase;
         this.loginWithGoogleUseCase = loginWithGoogleUseCase;
         this.registerWithEmailUseCase = registerWithEmailUseCase;
+        this.saveUserIfNotExistsUseCase = saveUserIfNotExistsUseCase;
     }
 
     /**
@@ -87,11 +92,7 @@ public class AuthViewModel extends ViewModel {
         loginWithEmailUseCase.execute(email, password).observeForever(resource -> {
             switch (resource.getStatus()) {
                 case SUCCESS:
-                    if (resource.getData() != null) {
-                        loginViewState.setValue(LoginViewState.success());
-                    } else {
-                        loginViewState.setValue(LoginViewState.error("Error inesperado"));
-                    }
+                    loginViewState.setValue(LoginViewState.success());
                     break;
                 case ERROR:
                     loginViewState.setValue(LoginViewState.error(resource.getMessage()));
@@ -113,11 +114,7 @@ public class AuthViewModel extends ViewModel {
         registerWithEmailUseCase.execute(email, password).observeForever(resource -> {
             switch (resource.getStatus()) {
                 case SUCCESS:
-                    if (resource.getData() != null) {
-                        registerViewState.setValue(RegisterViewState.success());
-                    } else {
-                        registerViewState.setValue(RegisterViewState.error("Respuesta inesperada del servidor"));
-                    }
+                    registerViewState.setValue(RegisterViewState.success());
                     break;
                 case ERROR:
                     registerViewState.setValue(RegisterViewState.error(resource.getMessage()));
@@ -140,11 +137,7 @@ public class AuthViewModel extends ViewModel {
         loginWithGoogleUseCase.execute(tokenId).observeForever(resource -> {
             switch (resource.getStatus()) {
                 case SUCCESS:
-                    if (resource.getData() != null) {
-                        loginViewState.setValue(LoginViewState.success());
-                    } else {
-                        loginViewState.setValue(LoginViewState.error("Respuesta inesperada del servidor"));
-                    }
+                    loginViewState.setValue(LoginViewState.success());
                     break;
                 case ERROR:
                     loginViewState.setValue(LoginViewState.error(resource.getMessage()));

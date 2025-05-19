@@ -11,8 +11,32 @@ public class UserModel {
     private Date birthDate;
     private Country country;
 
-    public UserModel(String firebaseUid, String profilePicURL, String name, Date birthDate, Country country) {
+    /**
+     * Constructor para deserialización automática con Firestore.
+     */
+    public UserModel(){}
+
+    /**
+     * Constructor para persistir el usuario en Firestore cuando se registra o se logea por primera
+     * vez en la aplicación.
+     *
+     * @param firebaseUid El UID del usuario recién creado.
+     * @param email El correo que ha utilizado el usuario para registrarse.
+     */
+    public UserModel(String firebaseUid, String email){
         this.firebaseUid = firebaseUid;
+        this.email = email;
+    }
+
+    /**
+     * Constructor para completar/editar los detalles del usuario desde su perfil.
+     *
+     * @param profilePicURL
+     * @param name
+     * @param birthDate
+     * @param country
+     */
+    public UserModel(String profilePicURL, String name, Date birthDate, Country country) {
         this.profilePicURL = profilePicURL;
         this.name = name;
         this.birthDate = birthDate;
