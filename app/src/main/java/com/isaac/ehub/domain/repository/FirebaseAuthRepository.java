@@ -19,4 +19,5 @@ public interface FirebaseAuthRepository {
     LiveData<Resource<Boolean>> loginWithGoogle(String idToken);
 
     boolean isUserAuthenticated();
+    void signOut();
 }
