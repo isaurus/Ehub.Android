@@ -2,8 +2,6 @@ package com.isaac.ehub.ui.home;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.PopupMenu;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -50,12 +48,12 @@ public class HomeActivity extends AppCompatActivity {
             navController = navHostFragment.getNavController();
             NavigationUI.setupWithNavController(binding.bottomNavigation, navController);
 
-            UIVisibilityUtils.setupVisibilityListener(
+
+            UIVisibilityUtils.setupVisibilityListener(  // ¡NO ME ESCONDE EL LOGOUT DEL TOOLBAR!
                     navController,
-                    new Integer[] { R.id.userProfileFragment, R.id.aboutFragment },
-                    binding.bottomNavigation,
-                    binding.userAvatar,
-                    binding.menuButton
+                    new Integer[] { R.id.userProfileFragment, R.id.editUserProfileFragment },
+                    binding.linearLayout,
+                    binding.bottomNavigation
             );
         }
 
@@ -64,36 +62,14 @@ public class HomeActivity extends AppCompatActivity {
 
     private void setUpToolbar() {
         // Configurar clic en el avatar
-        binding.userAvatar.setOnClickListener(v -> {
+        binding.actionUserProfile.setOnClickListener(v -> {
             // Navegar al perfil de usuario
             navController.navigate(R.id.userProfileFragment);
         });
 
-        // Configurar menú de 3 puntos
-        binding.menuButton.setOnClickListener(v -> {
-            showPopupMenu();
-        });
+        binding.actionLogout.setOnClickListener(v -> signOut());
     }
 
-    private void showPopupMenu() {
-        PopupMenu popup = new PopupMenu(this, binding.menuButton);
-        popup.inflate(R.menu.toolbar_menu);
-
-        popup.setOnMenuItemClickListener(item -> {
-            int itemId = item.getItemId();
-            if (itemId == R.id.action_about) {
-                navController.navigate(R.id.aboutFragment);
-                binding.bottomNavigation.setVisibility(View.GONE);
-                return true;
-            } else if (itemId == R.id.action_logout) {
-                signOut();
-                return true;
-            }
-            return false;
-        });
-
-        popup.show();
-    }
 
     private void signOut() {
         homeViewModel.signOut();
