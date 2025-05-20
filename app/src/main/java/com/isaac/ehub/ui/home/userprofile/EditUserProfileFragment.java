@@ -13,19 +13,22 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.isaac.ehub.R;
-import com.isaac.ehub.databinding.FragmentUserProfileBinding;
+import com.isaac.ehub.core.utils.InsetsUtils;
+import com.isaac.ehub.databinding.FragmentEditUserProfileBinding;
 
 import dagger.hilt.android.AndroidEntryPoint;
 
 @AndroidEntryPoint
-public class UserProfileFragment extends Fragment {
+public class EditUserProfileFragment extends Fragment {
 
-    private FragmentUserProfileBinding binding;
+    private FragmentEditUserProfileBinding binding;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        binding = FragmentUserProfileBinding.inflate(inflater, container, false);
+        binding = FragmentEditUserProfileBinding.inflate(inflater, container, false);
+
+        InsetsUtils.applySystemWindowInsetsPadding(binding.getRoot());
 
         return binding.getRoot();
     }
@@ -39,11 +42,13 @@ public class UserProfileFragment extends Fragment {
 
     private void setUpListeners() {
         binding.actionBack.setOnClickListener(v -> {
-            NavHostFragment.findNavController(this).navigate(R.id.action_userProfileFragment_to_teamContainerFragment);
+            // ¿LANZAR UN DIALOG DE "SEGURO QUE QUIERES VOLVER ATRÁS? LOS CAMBIOS NO SE VAN A GUARDAR
+            NavHostFragment.findNavController(this).navigate(R.id.action_editUserProfileFragment_to_userProfileFragment);
         });
 
-        binding.btnEditProfile.setOnClickListener(v -> {
-            NavHostFragment.findNavController(this).navigate(R.id.action_userProfileFragment_to_editUserProfileFragment);
+        binding.btnSaveProfile.setOnClickListener(v -> {
+            // PERSISTIR CAMBIOS EN FIRESTORE
+            NavHostFragment.findNavController(this).navigate(R.id.action_editUserProfileFragment_to_userProfileFragment);
         });
     }
 }
