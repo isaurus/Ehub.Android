@@ -2,6 +2,7 @@ package com.isaac.ehub.ui.home;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.PopupMenu;
 
 import androidx.activity.EdgeToEdge;
@@ -13,6 +14,7 @@ import androidx.navigation.ui.NavigationUI;
 
 import com.isaac.ehub.R;
 import com.isaac.ehub.core.utils.InsetsUtils;
+import com.isaac.ehub.core.utils.UIVisibilityUtils;
 import com.isaac.ehub.databinding.ActivityHomeBinding;
 import com.isaac.ehub.ui.auth.AuthActivity;
 
@@ -46,12 +48,18 @@ public class HomeActivity extends AppCompatActivity {
 
         if (navHostFragment != null){
             navController = navHostFragment.getNavController();
-
             NavigationUI.setupWithNavController(binding.bottomNavigation, navController);
+
+            UIVisibilityUtils.setupVisibilityListener(
+                    navController,
+                    new Integer[] { R.id.userProfileFragment, R.id.aboutFragment },
+                    binding.bottomNavigation,
+                    binding.userAvatar,
+                    binding.menuButton
+            );
         }
 
         setUpToolbar();
-
     }
 
     private void setUpToolbar() {
@@ -75,6 +83,7 @@ public class HomeActivity extends AppCompatActivity {
             int itemId = item.getItemId();
             if (itemId == R.id.action_about) {
                 navController.navigate(R.id.aboutFragment);
+                binding.bottomNavigation.setVisibility(View.GONE);
                 return true;
             } else if (itemId == R.id.action_logout) {
                 signOut();
