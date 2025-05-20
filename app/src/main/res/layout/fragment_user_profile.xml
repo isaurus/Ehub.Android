@@ -1,14 +1,102 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFF">
+    android:background="#FFF"
+    android:padding="16dp">
 
-    <TextView
+
+    <ImageView
+        android:id="@+id/img_profile_pic"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:text="USER PROFILE FEATURE"
-        android:textSize="20sp" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:srcCompat="@tools:sample/avatars" />
 
-</FrameLayout>
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/tv_user_name_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Nombre"
+        app:layout_constraintStart_toStartOf="@+id/img_profile_pic"
+        app:layout_constraintTop_toBottomOf="@+id/img_profile_pic" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/tv_user_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="Nombre de usuario"
+        app:layout_constraintStart_toStartOf="@+id/tv_user_name_title"
+        app:layout_constraintTop_toBottomOf="@+id/tv_user_name_title" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/tv_email_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Email"
+        app:layout_constraintStart_toStartOf="@+id/tv_user_name"
+        app:layout_constraintTop_toBottomOf="@+id/tv_user_name" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/tv_email"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="isaacmartin.pro@gmail.com"
+        app:layout_constraintStart_toStartOf="@+id/tv_email_title"
+        app:layout_constraintTop_toBottomOf="@+id/tv_email_title" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/tv_user_birthdate_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Fecha de nacimiento"
+        app:layout_constraintStart_toStartOf="@+id/tv_email"
+        app:layout_constraintTop_toBottomOf="@+id/tv_email" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/user_birthdate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="28 de Febrero de 1995"
+        app:layout_constraintStart_toStartOf="@+id/tv_user_birthdate_title"
+        app:layout_constraintTop_toBottomOf="@+id/tv_user_birthdate_title" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/tv_country_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="País"
+        app:layout_constraintStart_toStartOf="@+id/user_birthdate"
+        app:layout_constraintTop_toBottomOf="@+id/user_birthdate" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/tv_country"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="España"
+        app:layout_constraintStart_toStartOf="@+id/tv_country_title"
+        app:layout_constraintTop_toBottomOf="@+id/tv_country_title" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_edit_profile"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="50dp"
+        android:text="Editar Perfil"
+        app:cornerRadius="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
