@@ -84,11 +84,9 @@
     <!-- Botón de inicio de sesión tradicional -->
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_login"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        style="@style/Large_Button"
         android:layout_marginTop="24dp"
         android:text="Iniciar sesión"
-        app:cornerRadius="8dp"
         android:padding="12dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
