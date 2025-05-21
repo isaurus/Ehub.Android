@@ -8,6 +8,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.isaac.ehub.core.Resource;
 import com.isaac.ehub.core.mapper.UserMapper;
 import com.isaac.ehub.domain.model.UserModel;
+import com.isaac.ehub.domain.repository.FirebaseAuthRepository;
 import com.isaac.ehub.domain.repository.FirestoreUserRepository;
 
 import java.util.Map;
@@ -19,10 +20,12 @@ import javax.inject.Singleton;
 public class FirestoreUserRepositoryImpl implements FirestoreUserRepository {
 
     private final FirebaseFirestore firestore;
+    private final FirebaseAuthRepository firebaseAuthRepository;
 
     @Inject
-    public FirestoreUserRepositoryImpl(FirebaseFirestore firestore) {
+    public FirestoreUserRepositoryImpl(FirebaseFirestore firestore, FirebaseAuthRepository firebaseAuthRepository) {
         this.firestore = firestore;
+        this.firebaseAuthRepository = firebaseAuthRepository;
     }
 
 
@@ -57,10 +60,37 @@ public class FirestoreUserRepositoryImpl implements FirestoreUserRepository {
         Map<String, Object> map = UserMapper.toMap(userModel);
 
         firestore.collection("users")
-                .document(userModel.getFirebaseUid())
+                .document(firebaseAuthRepository.getAuthenticatedUser().getFirebaseUid())
                 .update(map)
                 .addOnSuccessListener(unused -> result.setValue(Resource.success(true)))
                 .addOnFailureListener(e -> result.setValue(Resource.error("Error al editar el usuario " + e.getMessage())));
+
+        return result;
+    }
+
+    @Override
+    public LiveData<Resource<UserModel>> getCurrentUser(){
+        MutableLiveData<Resource<UserModel>> result = new MutableLiveData<>();
+        result.setValue(Resource.loading());
+
+        String userUid = firebaseAuthRepository.getAuthenticatedUser().getFirebaseUid();
+
+        firestore.collection("users")
+                .document(userUid)
+                .get()
+                .addOnSuccessListener(documentSnapshot -> {
+                    if (documentSnapshot.exists()) {
+                        UserModel user = documentSnapshot.toObject(UserModel.class);
+                        if (user != null) {
+                            result.setValue(Resource.success(user));
+                        } else {
+                            result.setValue(Resource.error("Error al mapear el usuario"));
+                        }
+                    } else {
+                        result.setValue(Resource.error("Usuario no encontrado"));
+                    }
+                })
+                .addOnFailureListener(e -> result.setValue(Resource.error("Error al obtener usuario: " + e.getMessage())));
 
         return result;
     }

@@ -7,7 +7,7 @@ public class EditUserProfileViewState {
     private final Resource<?> resource;
     private final boolean isAvatarValid;
     private final boolean isNameValid;
-    boolean isBirthDateValid;
+    private final boolean isBirthDateValid;
     private final boolean isCountryValid;
 
     public EditUserProfileViewState(Resource<?> resource, boolean isAvatarValid, boolean isNameValid, boolean isBirthDateValid, boolean isCountryValid) {
@@ -18,7 +18,10 @@ public class EditUserProfileViewState {
         this.isCountryValid = isCountryValid;
     }
 
-    public static EditUserProfileViewState validating(boolean isAvatarValid, boolean isNameValid, boolean isBirthDateValid, boolean isCountryValid){
+    public static EditUserProfileViewState validating(boolean isAvatarValid,
+                                                      boolean isNameValid,
+                                                      boolean isBirthDateValid,
+                                                      boolean isCountryValid){
         return new EditUserProfileViewState(
                 Resource.validating(),
                 isAvatarValid,
@@ -52,6 +55,10 @@ public class EditUserProfileViewState {
                 true,
                 true,
                 true);
+    }
+
+    public String getMessage() {
+        return resource.getMessage();
     }
 
     public Resource.Status getStatus(){ return resource.getStatus(); }

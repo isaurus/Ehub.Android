@@ -14,6 +14,7 @@ import com.isaac.ehub.domain.usecase.auth.LoginWithGoogleUseCase;
 import com.isaac.ehub.domain.usecase.auth.RegisterWithEmailUseCase;
 import com.isaac.ehub.domain.usecase.home.SignOutUseCase;
 import com.isaac.ehub.domain.usecase.home.user.EditUserProfileUseCase;
+import com.isaac.ehub.domain.usecase.home.user.GetCurrentUserUseCase;
 
 import javax.inject.Singleton;
 
@@ -124,8 +125,8 @@ public class AppModule {
 
     @Provides
     @Singleton
-    public static FirestoreUserRepository provideFirestoreUserRepository(FirebaseFirestore firestore){
-        return new FirestoreUserRepositoryImpl(firestore);
+    public static FirestoreUserRepository provideFirestoreUserRepository(FirebaseFirestore firestore, FirebaseAuthRepository firebaseAuthRepository){
+        return new FirestoreUserRepositoryImpl(firestore, firebaseAuthRepository);
     }
 
     @Provides
@@ -138,5 +139,11 @@ public class AppModule {
     @Singleton
     public static EditUserProfileUseCase provideEditUserProfileUseCase(FirestoreUserRepository firestoreUserRepository){
         return new EditUserProfileUseCase(firestoreUserRepository);
+    }
+
+    @Provides
+    @Singleton
+    public static GetCurrentUserUseCase provideGetCurrentUserUseCase(FirestoreUserRepository firestoreUserRepository){
+        return new GetCurrentUserUseCase(firestoreUserRepository);
     }
 }

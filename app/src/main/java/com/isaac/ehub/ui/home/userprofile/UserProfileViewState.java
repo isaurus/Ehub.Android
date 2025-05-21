@@ -58,6 +58,10 @@ public class UserProfileViewState {
 
     public Resource.Status getStatus(){ return resource.getStatus(); }
 
+    public <T> T getData() {
+        return (T) resource.getData();
+    }
+
     public boolean isAvatarValid(){ return isAvatarValid; }
 
     public boolean isNameValid(){ return isNameValid; }

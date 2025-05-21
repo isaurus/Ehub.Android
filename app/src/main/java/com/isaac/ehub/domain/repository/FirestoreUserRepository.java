@@ -9,4 +9,6 @@ public interface FirestoreUserRepository {
 
     LiveData<Resource<Boolean>> createUserIfNotExists(UserModel userModel);
     LiveData<Resource<Boolean>> editUser(UserModel userModel);
+
+    LiveData<Resource<UserModel>> getCurrentUser();
 }

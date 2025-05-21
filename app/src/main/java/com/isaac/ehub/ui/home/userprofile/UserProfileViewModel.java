@@ -41,8 +41,10 @@ public class UserProfileViewModel extends ViewModel {
                     editUserProfileViewState.setValue(EditUserProfileViewState.success());
                     break;
                 case ERROR:
+                    editUserProfileViewState.setValue(EditUserProfileViewState.error(resource.getMessage()));
                     break;
                 case LOADING:
+                    editUserProfileViewState.setValue(EditUserProfileViewState.loading());
                     break;
             }
         });
@@ -54,8 +56,10 @@ public class UserProfileViewModel extends ViewModel {
         boolean isBirthDateValid = isValidBirthDate(birthDateStr);
         boolean isCountryValid = isValidCountry(country);
 
+        editUserProfileViewState.setValue(EditUserProfileViewState.validating(isAvatarValid, isNameValid, isBirthDateValid, isCountryValid));
+
         if (isAvatarValid && isNameValid && isBirthDateValid && isCountryValid){
-            editUserProfileViewState.setValue(EditUserProfileViewState.validating(isAvatarValid, isNameValid, isBirthDateValid, isCountryValid));
+            editUserProfileViewState.setValue(EditUserProfileViewState.loading());
             editUserProfile(new UserModel(avatar, name, formatBirthDate(birthDateStr), country));
         }
     }
@@ -65,15 +69,15 @@ public class UserProfileViewModel extends ViewModel {
     }
 
     private boolean isValidName(String name){
-        return name.length() <= MAX_NAME_LENGTH;
+        return !name.isEmpty() && name.length() <= MAX_NAME_LENGTH;
     }
 
     private boolean isValidBirthDate(String birthDate){
-        return true;        // IMPLEMENTAR VALIDACIÓN, ESTO ES PARA PRUEBAS
+        return !birthDate.isEmpty();        // IMPLEMENTAR VALIDACIÓN, ESTO ES PARA PRUEBAS
     }
 
     private boolean isValidCountry(String country){
-        return true;        // IMPLEMENTAR VALIDACIÓN, ESTO ES PARA PRUEBAS
+        return !country.isEmpty();        // IMPLEMENTAR VALIDACIÓN, ESTO ES PARA PRUEBAS
     }
 
     private Date formatBirthDate(String birthDateStr){

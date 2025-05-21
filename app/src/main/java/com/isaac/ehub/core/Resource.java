@@ -17,27 +17,9 @@ public class Resource<T> {
      * Enumeración que define los posibles estados de la operación.
      */
     public enum Status {
-        /**
-         * Estado que indica que la operación está en progreso.
-         */
         LOADING,
-
-        /**
-         * Estado que indica que la operación fue exitosa.
-         * En este caso el atributo {@code data} contendrá el resultado.
-         */
         SUCCESS,
-
-        /**
-         * Estado que indica que la operación falló.
-         * En este caso el atributo {@code message} contendrá el mensaje de error.
-         */
         ERROR,
-
-        /**
-         * Estado adicional para procesos de validación,
-         * por ejemplo, la validación de formularios antes de enviar datos.
-         */
         VALIDATING
     }
 

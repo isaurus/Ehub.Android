@@ -12,10 +12,12 @@ import androidx.navigation.fragment.NavHostFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.isaac.ehub.R;
 import com.isaac.ehub.core.utils.DatePickerUtils;
 import com.isaac.ehub.core.utils.InsetsUtils;
+import com.isaac.ehub.core.utils.TextWatcherUtils;
 import com.isaac.ehub.databinding.FragmentEditUserProfileBinding;
 
 import java.util.Calendar;
@@ -60,7 +62,6 @@ public class EditUserProfileFragment extends Fragment {
         });
 
         binding.btnSaveProfile.setOnClickListener(v -> {
-            // PERSISTIR CAMBIOS EN FIRESTORE
             // ¿CÓMO PILLO EL AVATAR?
             String avatar = "";
             String name = binding.etName.getText().toString().trim();
@@ -68,28 +69,29 @@ public class EditUserProfileFragment extends Fragment {
             String country = binding.etCountry.getText().toString().trim();
 
             userProfileViewModel.validateEditUserForm(avatar, name, birthDate,country);
-            // NavHostFragment.findNavController(this).navigate(R.id.action_editUserProfileFragment_to_userProfileFragment);
         });
+
+        enableButtonOnTextChange();
     }
 
     private void observeViewModel() {
         userProfileViewModel.getEditProfileViewState().observe(getViewLifecycleOwner(), editUserProfileViewState -> {
             switch (editUserProfileViewState.getStatus()){
                 case VALIDATING:
-                    // METER PROGRESS BAR
                     binding.btnSaveProfile.setEnabled(false);
 
                     binding.tilName.setError(editUserProfileViewState.isNameValid() ? null : "Nombre no permitido");
                     binding.tilBirthdate.setError(editUserProfileViewState.isBirthDateValid() ? null : "Fecha errónea");
-                    binding.tilCountry.setError(editUserProfileViewState.isBirthDateValid() ? null : "País erróneo");
+                    binding.tilCountry.setError(editUserProfileViewState.isCountryValid() ? null : "País erróneo");
                     break;
                 case LOADING:
                     binding.btnSaveProfile.setEnabled(false);
                     break;
                 case SUCCESS:
-
+                    NavHostFragment.findNavController(this).navigate(R.id.action_editUserProfileFragment_to_userProfileFragment);
                     break;
                 case ERROR:
+                    Toast.makeText(getContext(), editUserProfileViewState.getMessage(), Toast.LENGTH_LONG).show();
                     break;
             }
         });
@@ -116,5 +118,11 @@ public class EditUserProfileFragment extends Fragment {
                     }
                 }
         );
+    }
+
+    private void enableButtonOnTextChange(){
+        TextWatcherUtils.enableViewOnTextChange(binding.etName, binding.btnSaveProfile,binding.tilName);
+        TextWatcherUtils.enableViewOnTextChange(binding.etBirthdate, binding.btnSaveProfile,binding.tilBirthdate);
+        TextWatcherUtils.enableViewOnTextChange(binding.etCountry, binding.btnSaveProfile,binding.tilCountry);
     }
 }
