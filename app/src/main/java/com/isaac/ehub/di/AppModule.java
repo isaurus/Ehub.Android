@@ -13,6 +13,7 @@ import com.isaac.ehub.domain.usecase.auth.LoginWithEmailUseCase;
 import com.isaac.ehub.domain.usecase.auth.LoginWithGoogleUseCase;
 import com.isaac.ehub.domain.usecase.auth.RegisterWithEmailUseCase;
 import com.isaac.ehub.domain.usecase.home.SignOutUseCase;
+import com.isaac.ehub.domain.usecase.home.user.EditUserProfileUseCase;
 
 import javax.inject.Singleton;
 
@@ -131,5 +132,11 @@ public class AppModule {
     @Singleton
     public static CreateUserIfNotExistsUseCase provideSaveUserIfNotExists(FirestoreUserRepository firestoreUserRepository){
         return new CreateUserIfNotExistsUseCase(firestoreUserRepository);
+    }
+
+    @Provides
+    @Singleton
+    public static EditUserProfileUseCase provideEditUserProfileUseCase(FirestoreUserRepository firestoreUserRepository){
+        return new EditUserProfileUseCase(firestoreUserRepository);
     }
 }

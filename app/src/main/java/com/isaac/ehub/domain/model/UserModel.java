@@ -9,7 +9,7 @@ public class UserModel {
     private String name;
     private String email;
     private Date birthDate;
-    private Country country;
+    private String country;
 
     /**
      * Constructor para deserialización automática con Firestore.
@@ -36,7 +36,7 @@ public class UserModel {
      * @param birthDate
      * @param country
      */
-    public UserModel(String profilePicURL, String name, Date birthDate, Country country) {
+    public UserModel(String profilePicURL, String name, Date birthDate, String country) {
         this.profilePicURL = profilePicURL;
         this.name = name;
         this.birthDate = birthDate;
@@ -83,11 +83,11 @@ public class UserModel {
         this.birthDate = birthDate;
     }
 
-    public Country getCountry() {
+    public String getCountry() {
         return country;
     }
 
-    public void setCountry(Country country) {
+    public void setCountry(String country) {
         this.country = country;
     }
 }

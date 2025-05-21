@@ -2,16 +2,15 @@ package com.isaac.ehub.ui.home.userprofile;
 
 import com.isaac.ehub.core.Resource;
 
-public class UserProfileViewState {
+public class EditUserProfileViewState {
 
     private final Resource<?> resource;
     private final boolean isAvatarValid;
     private final boolean isNameValid;
-    private final boolean isBirthDateValid;
+    boolean isBirthDateValid;
     private final boolean isCountryValid;
 
-
-    public UserProfileViewState(Resource<?> resource, boolean isAvatarValid, boolean isNameValid, boolean isBirthDateValid, boolean isCountryValid) {
+    public EditUserProfileViewState(Resource<?> resource, boolean isAvatarValid, boolean isNameValid, boolean isBirthDateValid, boolean isCountryValid) {
         this.resource = resource;
         this.isAvatarValid = isAvatarValid;
         this.isNameValid = isNameValid;
@@ -19,9 +18,8 @@ public class UserProfileViewState {
         this.isCountryValid = isCountryValid;
     }
 
-
-    public static UserProfileViewState validating(boolean isAvatarValid, boolean isNameValid, boolean isBirthDateValid, boolean isCountryValid){
-        return new UserProfileViewState(
+    public static EditUserProfileViewState validating(boolean isAvatarValid, boolean isNameValid, boolean isBirthDateValid, boolean isCountryValid){
+        return new EditUserProfileViewState(
                 Resource.validating(),
                 isAvatarValid,
                 isNameValid,
@@ -29,8 +27,8 @@ public class UserProfileViewState {
                 isCountryValid);
     }
 
-    public static UserProfileViewState loading(){
-        return new UserProfileViewState(
+    public static EditUserProfileViewState loading(){
+        return new EditUserProfileViewState(
                 Resource.loading(),
                 true,
                 true,
@@ -38,8 +36,8 @@ public class UserProfileViewState {
                 true);
     }
 
-    public static <T> UserProfileViewState success(){
-        return new UserProfileViewState(
+    public static <T> EditUserProfileViewState success(){
+        return new EditUserProfileViewState(
                 Resource.success(true),
                 true,
                 true,
@@ -47,8 +45,8 @@ public class UserProfileViewState {
                 true);
     }
 
-    public static UserProfileViewState error(String message){
-        return new UserProfileViewState(
+    public static EditUserProfileViewState error(String message){
+        return new EditUserProfileViewState(
                 Resource.error(message),
                 true,
                 true,
