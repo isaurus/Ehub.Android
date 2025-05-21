@@ -5,7 +5,8 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.isaac.ehub.domain.model.UserModel;
-import com.isaac.ehub.domain.usecase.home.user.EditUserProfileUseCase;
+import com.isaac.ehub.domain.usecase.home.user.GetCurrentUserUseCase;
+import com.isaac.ehub.domain.usecase.home.user.UpdateUserUseCase;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -21,21 +22,24 @@ public class UserProfileViewModel extends ViewModel {
 
     private static final int MAX_NAME_LENGTH = 20;
 
-    private final EditUserProfileUseCase editUserProfileUseCase;
+    private final UpdateUserUseCase updateUserUseCase;
+    private final GetCurrentUserUseCase getCurrentUserUseCase;
 
     public final MutableLiveData<UserProfileViewState> userProfileViewState = new MutableLiveData<>();
     public final MutableLiveData<EditUserProfileViewState> editUserProfileViewState = new MutableLiveData<>();
 
     @Inject
-    public UserProfileViewModel(EditUserProfileUseCase editUserProfileUseCase) {
-        this.editUserProfileUseCase = editUserProfileUseCase;
+    public UserProfileViewModel(UpdateUserUseCase updateUserUseCase,
+                                GetCurrentUserUseCase getCurrentUserUseCase) {
+        this.updateUserUseCase = updateUserUseCase;
+        this.getCurrentUserUseCase = getCurrentUserUseCase;
     }
 
     public LiveData<UserProfileViewState> getUserProfileViewState() { return userProfileViewState; }
     public LiveData<EditUserProfileViewState> getEditProfileViewState() { return editUserProfileViewState; }
 
-    public void editUserProfile(UserModel userModel){
-        editUserProfileUseCase.execute(userModel).observeForever(resource -> {
+    public void updateUserProfile(UserModel userModel){
+        updateUserUseCase.execute(userModel).observeForever(resource -> {
             switch (resource.getStatus()){
                 case SUCCESS:
                     editUserProfileViewState.setValue(EditUserProfileViewState.success());
@@ -45,6 +49,22 @@ public class UserProfileViewModel extends ViewModel {
                     break;
                 case LOADING:
                     editUserProfileViewState.setValue(EditUserProfileViewState.loading());
+                    break;
+            }
+        });
+    }
+
+    public void getUserProfile(){
+        getCurrentUserUseCase.execute().observeForever(resource -> {
+            switch (resource.getStatus()){
+                case SUCCESS:
+                    userProfileViewState.setValue(UserProfileViewState.success(resource.getData()));
+                    break;
+                case ERROR:
+                    userProfileViewState.setValue(UserProfileViewState.error(resource.getMessage()));
+                    break;
+                case LOADING:
+                    userProfileViewState.setValue(UserProfileViewState.loading());
                     break;
             }
         });
@@ -60,7 +80,9 @@ public class UserProfileViewModel extends ViewModel {
 
         if (isAvatarValid && isNameValid && isBirthDateValid && isCountryValid){
             editUserProfileViewState.setValue(EditUserProfileViewState.loading());
-            editUserProfile(new UserModel(avatar, name, formatBirthDate(birthDateStr), country));
+
+
+            updateUserProfile(new UserModel(avatar, name, formatBirthDate(birthDateStr), country)); // QUIZÁ NO ME DEBERÍA CREAR UN NUEVO USERMODEL
         }
     }
 
@@ -88,7 +110,6 @@ public class UserProfileViewModel extends ViewModel {
         } catch (ParseException e) {
             // Maneja error de formato inválido
         }
-
         return birthDate;
     }
 }

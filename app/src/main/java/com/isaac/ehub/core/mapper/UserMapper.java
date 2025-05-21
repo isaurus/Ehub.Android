@@ -31,10 +31,17 @@ public class UserMapper {
         return user;
     }
 
-    // Si necesitas convertir al map para guardar en Firestore
+
+    /**
+     * Mapeo de UserModel para persistencia en Firestore Database. No persiste ni firebaseUid
+     * ni email porque es para actualizar un usuario, y no contempla esas dos propiedades.
+     * @param user Usuario recibido para actualizar.
+     * @return
+     */
     public static Map<String, Object> toMap(UserModel user) {
         Map<String, Object> map = new HashMap<>();
         //map.put("firebaseUid", user.getFirebaseUid());
+        //map.put("email", user.getEmail());
         map.put("profilePicURL", user.getProfilePicURL());
         map.put("name", user.getName());
         map.put("birthDate", user.getBirthDate());
@@ -42,4 +49,5 @@ public class UserMapper {
 
         return map;
     }
+
 }

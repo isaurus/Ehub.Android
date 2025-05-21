@@ -4,6 +4,10 @@ import com.isaac.ehub.domain.repository.FirebaseAuthRepository;
 
 import javax.inject.Inject;
 
+/**
+ * Use case para verificar si el usuario está ya autenticado. Inyecta una dependencia de la implementación
+ * del repositorio de FirebaseAuth.
+ */
 public class CheckAuthenticatedUserUseCase {
 
     private final FirebaseAuthRepository firebaseAuthRepository;

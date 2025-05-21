@@ -14,6 +14,10 @@ import com.isaac.ehub.ui.home.HomeActivity;
 
 import dagger.hilt.android.AndroidEntryPoint;
 
+/**
+ * Esta clase lanza al usuario al corazón de la aplicación si está logeado y, en caso contrario,
+ * lo direcciona a la fase de registro/login.
+ */
 @AndroidEntryPoint
 public class LaunchActivity extends AppCompatActivity {
 
@@ -25,18 +29,26 @@ public class LaunchActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
 
+        // Inflamos el layout con el binding y lo seteamos
         binding = ActivityLaunchBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        // Iniciamos el AuthViewModel
         authViewModel = new ViewModelProvider(this).get(AuthViewModel.class);
 
+        // Comprobamos si el usuario está ya autenticado
         checkAuthState();
     }
 
+    /**
+     * Comprueba si el usuario está previamente logeado. En caso afirmativo, lanza al usuario a las
+     * funcionalidades principales de la aplicación. En caso contrario, lo direcciona a la fase de
+     * registro/login.
+     */
     private void checkAuthState() {
-        if (authViewModel.isUserAuthenticated()){
+        if (authViewModel.isUserAuthenticated()){   // Si está autenticado
             startActivity(new Intent(this, HomeActivity.class));
-        } else {
+        } else {    // Si NO está autenticado
             startActivity(new Intent(this, AuthActivity.class));
         }
         finish();

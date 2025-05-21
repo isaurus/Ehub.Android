@@ -8,16 +8,16 @@ import com.isaac.ehub.domain.repository.FirestoreUserRepository;
 
 import javax.inject.Inject;
 
-public class EditUserProfileUseCase {
+public class UpdateUserUseCase {
 
     private final FirestoreUserRepository firestoreUserRepository;
 
     @Inject
-    public EditUserProfileUseCase(FirestoreUserRepository firestoreUserRepository) {
+    public UpdateUserUseCase(FirestoreUserRepository firestoreUserRepository) {
         this.firestoreUserRepository = firestoreUserRepository;
     }
 
     public LiveData<Resource<Boolean>> execute(UserModel userModel){
-        return firestoreUserRepository.editUser(userModel);
+        return firestoreUserRepository.updateUser(userModel);
     }
 }

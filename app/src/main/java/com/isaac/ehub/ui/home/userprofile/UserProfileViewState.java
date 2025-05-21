@@ -38,9 +38,9 @@ public class UserProfileViewState {
                 true);
     }
 
-    public static <T> UserProfileViewState success(){
+    public static <T> UserProfileViewState success(T data){
         return new UserProfileViewState(
-                Resource.success(true),
+                Resource.success(data),
                 true,
                 true,
                 true,

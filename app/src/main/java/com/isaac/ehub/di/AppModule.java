@@ -7,13 +7,13 @@ import com.isaac.ehub.data.repository.FirestoreUserRepositoryImpl;
 import com.isaac.ehub.domain.repository.FirebaseAuthRepository;
 import com.isaac.ehub.domain.repository.FirestoreUserRepository;
 import com.isaac.ehub.domain.usecase.auth.CheckAuthenticatedUserUseCase;
-import com.isaac.ehub.domain.usecase.auth.CreateUserIfNotExistsUseCase;
+import com.isaac.ehub.domain.usecase.home.user.CreateUserUseCase;
 import com.isaac.ehub.domain.usecase.auth.GetAuthenticatedUserUseCase;
 import com.isaac.ehub.domain.usecase.auth.LoginWithEmailUseCase;
 import com.isaac.ehub.domain.usecase.auth.LoginWithGoogleUseCase;
 import com.isaac.ehub.domain.usecase.auth.RegisterWithEmailUseCase;
 import com.isaac.ehub.domain.usecase.home.SignOutUseCase;
-import com.isaac.ehub.domain.usecase.home.user.EditUserProfileUseCase;
+import com.isaac.ehub.domain.usecase.home.user.UpdateUserUseCase;
 import com.isaac.ehub.domain.usecase.home.user.GetCurrentUserUseCase;
 
 import javax.inject.Singleton;
@@ -131,14 +131,14 @@ public class AppModule {
 
     @Provides
     @Singleton
-    public static CreateUserIfNotExistsUseCase provideSaveUserIfNotExists(FirestoreUserRepository firestoreUserRepository){
-        return new CreateUserIfNotExistsUseCase(firestoreUserRepository);
+    public static CreateUserUseCase provideSaveUserIfNotExists(FirestoreUserRepository firestoreUserRepository){
+        return new CreateUserUseCase(firestoreUserRepository);
     }
 
     @Provides
     @Singleton
-    public static EditUserProfileUseCase provideEditUserProfileUseCase(FirestoreUserRepository firestoreUserRepository){
-        return new EditUserProfileUseCase(firestoreUserRepository);
+    public static UpdateUserUseCase provideEditUserProfileUseCase(FirestoreUserRepository firestoreUserRepository){
+        return new UpdateUserUseCase(firestoreUserRepository);
     }
 
     @Provides

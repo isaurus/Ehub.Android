@@ -1,6 +1,5 @@
 package com.isaac.ehub.domain.model;
 
-import ehub.backend.domain.enums.Country;
 import java.util.Date;
 
 public class UserModel {

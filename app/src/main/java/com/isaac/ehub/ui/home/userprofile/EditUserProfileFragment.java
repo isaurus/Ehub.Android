@@ -51,6 +51,7 @@ public class EditUserProfileFragment extends Fragment {
 
         calendar = Calendar.getInstance();
         setUpDatePicker();
+
         setUpListeners();
         observeViewModel();
     }

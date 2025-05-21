@@ -16,6 +16,10 @@ import java.util.Map;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
+/**
+ * Implementación de FirestoreUserRepository para inyectar las dependencias necesarias y desarrollar
+ * el cuerpo de los métodos declarados.
+ */
 @Singleton
 public class FirestoreUserRepositoryImpl implements FirestoreUserRepository {
 
@@ -28,32 +32,35 @@ public class FirestoreUserRepositoryImpl implements FirestoreUserRepository {
         this.firebaseAuthRepository = firebaseAuthRepository;
     }
 
-
+    /**
+     * Persiste al usuario en Firestore Database la primera vez que el usuario se logea con Google
+     * o se registra manualmente.
+     *
+     * @param userModel El modelo de datos que será persistido en Firestore Database.
+     * @return true en caso de éxito, false en caso contrario, encapsulado en un Resource.
+     */
     @Override
-    public LiveData<Resource<Boolean>> createUserIfNotExists(UserModel userModel) {
+    public LiveData<Resource<Boolean>> createUser(UserModel userModel) {
         MutableLiveData<Resource<Boolean>> result = new MutableLiveData<>();
         result.setValue(Resource.loading());
 
-        DocumentReference docRef = firestore.collection("users").document(userModel.getFirebaseUid());
-        docRef.get().addOnCompleteListener(task -> {
-            if (task.isSuccessful()) {
-                if (!task.getResult().exists()) {
-                    docRef.set(userModel)
-                            .addOnSuccessListener(unused -> result.setValue(Resource.success(true)))
-                            .addOnFailureListener(e -> result.setValue(Resource.error("Error al guardar el usuario: " + e.getMessage())));
-                } else {
-                    result.setValue(Resource.success(true)); // Ya existe, así que es correcto
-                }
-            } else {
-                result.setValue(Resource.error("Error al comprobar el usuario: " + task.getException().getMessage()));
-            }
-        });
+        firestore.collection("users")
+                .document(userModel.getFirebaseUid())
+                .set(userModel)
+                .addOnSuccessListener(unused -> result.setValue(Resource.success(true)))
+                .addOnFailureListener(e -> result.setValue(Resource.error("Error al guardar usuario: " + e.getMessage())));
 
         return result;
     }
 
+    /**
+     * Persiste al usuario actualizado en Firestore Database.
+     *
+     * @param userModel El usuario con las nuevas propiedades a persistir.
+     * @return true si la acción es exitosa, false en caso contrario, encapsulado en Resource.
+     */
     @Override
-    public LiveData<Resource<Boolean>> editUser(UserModel userModel) {
+    public LiveData<Resource<Boolean>> updateUser(UserModel userModel) {
         MutableLiveData<Resource<Boolean>> result = new MutableLiveData<>();
         result.setValue(Resource.loading());
 

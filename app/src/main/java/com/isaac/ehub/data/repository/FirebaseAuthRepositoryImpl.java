@@ -26,11 +26,6 @@ public class FirebaseAuthRepositoryImpl implements FirebaseAuthRepository {
     }
 
     @Override
-    public void getIdToken(IdTokenCallback callback) {
-
-    }
-
-    @Override
     public LiveData<Resource<Boolean>> registerWithEmail(String email, String password) {
         MutableLiveData<Resource<Boolean>> result = new MutableLiveData<>();
         result.setValue(Resource.loading());
@@ -68,6 +63,11 @@ public class FirebaseAuthRepositoryImpl implements FirebaseAuthRepository {
         return result;
     }
 
+    /**
+     * Implementación para obtener el usuario autenticado mapeado a UserModel.
+     *
+     * @return El FirebaseUser mapeado a UserModel.
+     */
     @Override
     public UserModel getAuthenticatedUser() {
         FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
@@ -75,7 +75,11 @@ public class FirebaseAuthRepositoryImpl implements FirebaseAuthRepository {
         return UserMapper.fromFirebaseUser(firebaseUser);
     }
 
-
+    /**
+     * Implementación para comprobar si el usuario ya está autenticado.
+     *
+     * @return true si está autenticado, false en caso contrario.
+     */
     @Override
     public boolean isUserAuthenticated(){
         return firebaseAuth.getCurrentUser() != null;

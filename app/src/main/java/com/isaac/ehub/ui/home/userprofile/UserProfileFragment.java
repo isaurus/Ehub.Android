@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.isaac.ehub.R;
+import com.isaac.ehub.core.utils.InsetsUtils;
 import com.isaac.ehub.databinding.FragmentUserProfileBinding;
 import com.isaac.ehub.domain.model.UserModel;
 
@@ -29,6 +30,8 @@ public class UserProfileFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         binding = FragmentUserProfileBinding.inflate(inflater, container, false);
+
+        InsetsUtils.applySystemWindowInsetsPadding(binding.getRoot());
 
         userProfileViewModel = new ViewModelProvider(requireActivity()).get(UserProfileViewModel.class);
 
@@ -54,14 +57,24 @@ public class UserProfileFragment extends Fragment {
     }
 
     private void observeViewModel(){
-        userProfileViewModel.userProfileViewState.observe(getViewLifecycleOwner(), userProfileViewState -> {
+        userProfileViewModel.getUserProfile();
+        userProfileViewModel.getUserProfileViewState().observe(getViewLifecycleOwner(), userProfileViewState -> {
             switch (userProfileViewState.getStatus()){
                 case SUCCESS:
                     UserModel user = userProfileViewState.getData();
+
+                    //binding.imgProfilePic.setImageDrawable();
                     binding.tvUserName.setText(user.getName());
                     binding.tvEmail.setText(user.getEmail());
-                    binding.tvUserBirthdate.setText(user.getBirthDate().toString());
+                    //binding.tvUserBirthdate.setText(user.getBirthDate());
                     binding.tvCountry.setText(user.getCountry());
+                    break;
+                case VALIDATING:
+                    break;
+                case LOADING:
+                    break;
+                case ERROR:
+                    break;
             }
         });
     }
