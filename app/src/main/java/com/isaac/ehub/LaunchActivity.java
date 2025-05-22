@@ -8,8 +8,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.isaac.ehub.databinding.ActivityLaunchBinding;
-import com.isaac.ehub.ui.auth.AuthActivity;
-import com.isaac.ehub.ui.auth.AuthViewModel;
+import com.isaac.ehub.ui.auth.LoginActivity;
+import com.isaac.ehub.ui.auth.LoginViewModel;
 import com.isaac.ehub.ui.home.HomeActivity;
 
 import dagger.hilt.android.AndroidEntryPoint;
@@ -22,7 +22,7 @@ import dagger.hilt.android.AndroidEntryPoint;
 public class LaunchActivity extends AppCompatActivity {
 
     private ActivityLaunchBinding binding;
-    private AuthViewModel authViewModel;
+    private LoginViewModel loginViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,7 +34,7 @@ public class LaunchActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         // Iniciamos el AuthViewModel
-        authViewModel = new ViewModelProvider(this).get(AuthViewModel.class);
+        loginViewModel = new ViewModelProvider(this).get(LoginViewModel.class);
 
         // Comprobamos si el usuario está ya autenticado
         checkAuthState();
@@ -46,10 +46,10 @@ public class LaunchActivity extends AppCompatActivity {
      * registro/login.
      */
     private void checkAuthState() {
-        if (authViewModel.isUserAuthenticated()){   // Si está autenticado
+        if (loginViewModel.isUserAuthenticated()){   // Si está autenticado
             startActivity(new Intent(this, HomeActivity.class));
         } else {    // Si NO está autenticado
-            startActivity(new Intent(this, AuthActivity.class));
+            startActivity(new Intent(this, LoginActivity.class));
         }
         finish();
     }

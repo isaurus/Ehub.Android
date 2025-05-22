@@ -2,14 +2,6 @@ package com.isaac.ehub.ui.auth;
 
 import com.isaac.ehub.core.Resource;
 
-/**
- * Clase que representa el estado actual de la vista del {@link LoginFragment}.
- * Utiliza la clase {@link Resource} para gestionar los diferentes estados
- * de una operación asíncrona (validando, cargando, éxito, error).
- *
- * Además, contiene información sobre la validez de los campos de formulario
- * (email y contraseña), permitiendo mostrar errores de validación en la UI.
- */
 public class LoginViewState {
 
     private final Resource<?> resource;

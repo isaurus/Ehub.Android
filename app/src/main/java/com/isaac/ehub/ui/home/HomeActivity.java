@@ -14,7 +14,7 @@ import com.isaac.ehub.R;
 import com.isaac.ehub.core.utils.InsetsUtils;
 import com.isaac.ehub.core.utils.UIVisibilityUtils;
 import com.isaac.ehub.databinding.ActivityHomeBinding;
-import com.isaac.ehub.ui.auth.AuthActivity;
+import com.isaac.ehub.ui.auth.LoginActivity;
 
 import dagger.hilt.android.AndroidEntryPoint;
 
@@ -74,7 +74,7 @@ public class HomeActivity extends AppCompatActivity {
     private void signOut() {
         homeViewModel.signOut();
 
-        startActivity(new Intent(this, AuthActivity.class));
+        startActivity(new Intent(this, LoginActivity.class));
         finish();
     }
 
